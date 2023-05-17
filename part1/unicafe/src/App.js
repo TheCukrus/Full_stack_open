@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Statistics from './Statistics.jsx';
 
 const App = () =>
 {
@@ -7,10 +8,6 @@ const App = () =>
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const all = good + neutral + bad;
-  const average = (good - bad) / all;
-  const positive = good / all * 100;
-  
   return (
     <div>
       <h1>give feedback</h1>
@@ -18,13 +15,7 @@ const App = () =>
       <input type="button" value="neutral" onClick={() => setNeutral(neutral + 1)} />
       <input type="button" value="bad" onClick={() => setBad(bad + 1)} />
 
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {average}</p>
-      <p>positive {positive}%</p>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
