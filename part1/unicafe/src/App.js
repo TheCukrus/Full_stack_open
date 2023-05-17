@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Button from './Button.jsx';
 import Statistics from './Statistics.jsx';
 
 const App = () =>
@@ -11,9 +12,11 @@ const App = () =>
   return (
     <div>
       <h1>give feedback</h1>
-      <input type="button" value="good" onClick={() => setGood(good + 1)} />
-      <input type="button" value="neutral" onClick={() => setNeutral(neutral + 1)} />
-      <input type="button" value="bad" onClick={() => setBad(bad + 1)} />
+
+
+      <Button val="good" func={() => setGood(good + 1)} />
+      <Button val="neutral" func={() => setNeutral(neutral + 1)} />
+      <Button val="bad" func={() => setBad(bad + 1)} />
 
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>

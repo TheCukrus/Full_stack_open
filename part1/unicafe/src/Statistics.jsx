@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticsLine from "./StatisticLine.jsx";
 
 const Statistics = (props) =>
 {
@@ -14,12 +15,12 @@ const Statistics = (props) =>
                 <p>No feedback given</p> :
                 <div>
                     <h1>statistics</h1>
-                    <p>good {good}</p>
-                    <p>neutral {neutral}</p>
-                    <p>bad {bad}</p>
-                    <p>all {all}</p>
-                    <p>average {average}</p>
-                    <p>positive {positive}%</p>
+                    <StatisticsLine text="good" value={good} />
+                    <StatisticsLine text="neutral" value={neutral} />
+                    <StatisticsLine text="bad" value={bad} />
+                    <StatisticsLine text="all" value={all} />
+                    <StatisticsLine text="average" value={average} />
+                    <StatisticsLine text="positive" value={positive} />
                 </div>
             }
         </div>
