@@ -14,20 +14,34 @@ const App = () =>
   ]
 
   const [selected, setSelected] = useState(0)
-
+  const [points, setPoints] = useState(Array.apply(null, new Array(8)).map(Number.prototype.valueOf, 0))
+  
   const handle_click = (arr) =>
   {
-    const random = Math.round(Math.random() * arr - 1);
+    const random = Math.round(Math.random() * arr);
     return setSelected(random);
   }
 
+  const handle_vote = (num, arr, stateChange) =>
+  {
+    const copyPoints = [...arr];
+    copyPoints[num] += 1;
+    return stateChange(copyPoints);
+  }
+  console.log(points)
+  console.log(selected)
   return (
     <>
+      {/* content */}
       <div>
-        {anecdotes[selected]}
+        <p>{anecdotes[selected]}</p>
+        <p>has {points[selected]} votes</p>
       </div>
+
+      {/* buttons */}
       <div>
-        <input type="button" value="next anecdote" onClick={() => (handle_click(anecdotes.length))} />
+        <input type="button" value="vote" onClick={() => (handle_vote(selected, points, setPoints))} />
+        <input type="button" value="next anecdote" onClick={() => (handle_click(anecdotes.length -1))} />
       </div>
     </>
   )
