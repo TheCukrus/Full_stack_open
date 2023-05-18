@@ -15,12 +15,14 @@ const Statistics = (props) =>
                 <p>No feedback given</p> :
                 <div>
                     <h1>statistics</h1>
+                    <table>
                     <StatisticsLine text="good" value={good} />
                     <StatisticsLine text="neutral" value={neutral} />
                     <StatisticsLine text="bad" value={bad} />
                     <StatisticsLine text="all" value={all} />
                     <StatisticsLine text="average" value={average} />
                     <StatisticsLine text="positive" value={positive} />
+                    </table>
                 </div>
             }
         </div>
