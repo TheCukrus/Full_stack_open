@@ -15,7 +15,14 @@ const App = () =>
 
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array.apply(null, new Array(8)).map(Number.prototype.valueOf, 0))
-  
+
+  //find value with the most votes
+  const maxVotes = Math.max(...points);
+
+  //find index
+  const indexOfMaxVotes = (ele) => ele === maxVotes;
+  const index = points.findIndex(indexOfMaxVotes);
+
   const handle_click = (arr) =>
   {
     const random = Math.round(Math.random() * arr);
@@ -28,10 +35,10 @@ const App = () =>
     copyPoints[num] += 1;
     return stateChange(copyPoints);
   }
-  console.log(points)
-  console.log(selected)
+
   return (
     <>
+      <h1>Anecdote of the day</h1>
       {/* content */}
       <div>
         <p>{anecdotes[selected]}</p>
@@ -41,7 +48,13 @@ const App = () =>
       {/* buttons */}
       <div>
         <input type="button" value="vote" onClick={() => (handle_vote(selected, points, setPoints))} />
-        <input type="button" value="next anecdote" onClick={() => (handle_click(anecdotes.length -1))} />
+        <input type="button" value="next anecdote" onClick={() => (handle_click(anecdotes.length - 1))} />
+      </div>
+
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdotes[index]}</p>
+        <p>has {maxVotes} votes</p>
       </div>
     </>
   )
