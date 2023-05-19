@@ -3,13 +3,20 @@ import Content from "./Content.jsx";
 import Header from "./Header.jsx";
 import Total from "./Total.jsx";
 
-const Course = ({ course }) =>
+const Course = ({ courses }) =>
 {
     return (
         <div>
-            <Header course={course.name} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
+            <h1>Web development curriculum</h1>
+            {courses.map((course) =>
+            (
+                <div key={course.id}>
+                    <Header name={course.name} />
+                    <Content parts={course.parts} />
+                    <Total parts={course.parts} />
+                </div>
+
+            ))}
         </div>
     )
 }
