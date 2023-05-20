@@ -10,9 +10,18 @@ const App = () =>
   const handleSubmit = (e) =>
   {
     e.preventDefault();
+    const check = persons.find((ele) => ele.name === newName);
+
+    if (check !== undefined)
+    {
+      alert(`${newName} is already added to phonebook`)
+      return;
+    }
+
     const temp = [...persons];
     temp.push({ name: newName });
     setPersons(temp);
+    setNewName("")
   }
 
   const handleOnChange = (e) => setNewName(e.target.value);
