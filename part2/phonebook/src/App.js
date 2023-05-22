@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
 import Persons from './Persons.jsx';
-import axios from "axios";
+import servises from "./servises/persons.js";
 
 const App = () =>
 {
@@ -11,18 +11,11 @@ const App = () =>
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
 
-  //axios fetching dbs data
-  const fetchData = async () =>
-  {
-    const responese = await axios.get("http://localhost:3001/persons");
-    console.log(responese.data);
-    setPersons(responese.data)
-  }
-
   //submit
   const handleSubmit = (e) =>
   {
     e.preventDefault();
+    //check if person exists in DB
     const check = persons.find((ele) => ele.name === newName);
 
     if (check !== undefined)
@@ -30,9 +23,14 @@ const App = () =>
       return alert(`${newName} is already added to phonebook`)
     }
 
-    const copyPhonebook = [...persons];
-    copyPhonebook.push({ name: newName, number: newNumber });
-    setPersons(copyPhonebook);
+    const newContact = {
+      name: newName,
+      number: newNumber,
+    }
+
+    servises.post(newContact);
+    servises.getAll().then(persons => { setPersons(persons) })
+
     setNewName("");
     setNewNumber("");
   }
@@ -51,7 +49,11 @@ const App = () =>
   }
 
   //useEffects
-  useEffect(() => { fetchData() }, [])
+  useEffect(() =>
+  {
+    servises.getAll()
+      .then(persons => { setPersons(persons) })
+  }, [])
 
   return (
     <div>
