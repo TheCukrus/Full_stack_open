@@ -17,17 +17,22 @@ const App = () =>
     //check if person exists in DB
     const check = persons.find((ele) => ele.name === newName);
 
-    if (check !== undefined)
-    {
-      return alert(`${newName} is already added to phonebook`)
-    }
-
     const newContact = {
       name: newName,
       number: newNumber,
     }
 
-    servises.post(newContact);
+    if (check !== undefined)
+    {
+      if (!window.confirm(`${check.name} is already added to phonebook, replace the old number with a new one?`)) return;
+
+      servises.update(check.id, newContact);
+    }
+    else
+    {
+      servises.post(newContact);
+    }
+
     servises.getAll().then(persons => { setPersons(persons) })
 
     setNewName("");

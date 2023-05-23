@@ -32,8 +32,7 @@ const remove = async (id) =>
 {
     try
     {
-        const response = await axios.delete(`${baseUrl}/${id}`)
-        return;
+        return await axios.delete(`${baseUrl}/${id}`);
     }
     catch (err)
     {
@@ -41,4 +40,16 @@ const remove = async (id) =>
     }
 }
 
-export default { getAll, post, remove }
+const update = async (id, data) =>
+{
+    try
+    {
+        return await axios.put(`${baseUrl}/${id}`, data);
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+
+export default { getAll, post, remove, update }
