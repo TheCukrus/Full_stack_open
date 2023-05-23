@@ -28,4 +28,17 @@ const post = async (personData) =>
     }
 }
 
-export default { getAll, post }
+const remove = async (id) =>
+{
+    try
+    {
+        const response = await axios.delete(`${baseUrl}/${id}`)
+        return;
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+
+export default { getAll, post, remove }

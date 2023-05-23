@@ -1,10 +1,15 @@
 import React from "react";
 
-const Persons = ({ shownContacts }) =>
+const Persons = ({ shownContacts, handleDelete }) =>
 {
     return (
         <div>
-            {shownContacts.map((ele) => <p key={ele.id}>{ele.name} {ele.number}</p>)}
+            {shownContacts.map((ele) =>
+                <div key={ele.id}>
+                    <span>{ele.name} {ele.number}</span>
+                    <input type="submit" value="delete" onClick={() => handleDelete(ele.id, ele.name)} />
+                </div>
+            )}
         </div>
     )
 }

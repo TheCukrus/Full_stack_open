@@ -11,7 +11,6 @@ const App = () =>
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
 
-  //submit
   const handleSubmit = (e) =>
   {
     e.preventDefault();
@@ -33,6 +32,16 @@ const App = () =>
 
     setNewName("");
     setNewNumber("");
+  }
+
+  const handleDelete = (id, name) =>
+  {
+    if (!window.confirm(`Delete ${name}?`)) return;
+
+    servises.remove(id);
+    servises.getAll()
+      .then(persons => { setPersons(persons) })
+
   }
 
   //onchange
@@ -73,7 +82,10 @@ const App = () =>
 
       <h3>Numbers</h3>
 
-      <Persons shownContacts={shownContacts} />
+      <Persons
+        shownContacts={shownContacts}
+        handleDelete={handleDelete}
+      />
 
     </div>
   )
