@@ -3,6 +3,7 @@ import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
 import Persons from './Persons.jsx';
 import servises from "./servises/persons.js";
+import Notification from './Notification.jsx';
 
 const App = () =>
 {
@@ -72,6 +73,8 @@ const App = () =>
   return (
     <div>
       <h2>Phonebook</h2>
+
+      {/* <Notification message={ } nameOfClass={ } /> */}
 
       <Filter handleSearch={handleSearch} />
 
