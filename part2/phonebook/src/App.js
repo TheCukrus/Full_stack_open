@@ -51,6 +51,7 @@ const App = () =>
     servises.remove(id);
     servises.getAll()
       .then(persons => { setPersons(persons) })
+    setNotification({ "message": `Removed ${name}`, "nameOfClass": "success" });
 
   }
 
