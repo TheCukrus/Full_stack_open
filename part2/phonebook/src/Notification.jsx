@@ -1,12 +1,17 @@
 import React from "react";
+import "./notification.css";
 
-const Notification = ({ message, nameOfClass }) => 
+const Notification = ({ notification }) => 
 {
-    return (
-        <div className={nameOfClass}>
-            <p>{message}</p>
-        </div>
-    )
+    if (notification !== null)
+    {
+        return (
+            <div className={notification.nameOfClass}>
+              {notification.message}
+            </div>
+        )
+    }
+    return null;
 }
 
 export default Notification;

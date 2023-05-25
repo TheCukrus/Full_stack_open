@@ -12,6 +12,8 @@ const App = () =>
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
 
+  const [notification, setNotification] = useState(null);
+
   const handleSubmit = (e) =>
   {
     e.preventDefault();
@@ -28,10 +30,12 @@ const App = () =>
       if (!window.confirm(`${check.name} is already added to phonebook, replace the old number with a new one?`)) return;
 
       servises.update(check.id, newContact);
+      setNotification({ "message": `Updated ${newName}`, "nameOfClass": "success" });
     }
     else
     {
       servises.post(newContact);
+      setNotification({ "message": `Added ${newName}`, "nameOfClass": "success" });
     }
 
     servises.getAll().then(persons => { setPersons(persons) })
@@ -68,13 +72,21 @@ const App = () =>
   {
     servises.getAll()
       .then(persons => { setPersons(persons) })
-  }, [])
+  }, []);
+
+  useEffect(() =>
+  {
+    setTimeout(() =>
+    {
+      setNotification(null)
+    }, 5000)
+  }, [notification])
 
   return (
     <div>
       <h2>Phonebook</h2>
 
-      {/* <Notification message={ } nameOfClass={ } /> */}
+      <Notification notification={notification} />
 
       <Filter handleSearch={handleSearch} />
 
