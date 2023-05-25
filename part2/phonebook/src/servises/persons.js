@@ -32,7 +32,7 @@ const remove = async (id) =>
 {
     try
     {
-        return await axios.delete(`${baseUrl}/${id}`);
+        return await axios.delete(`${baseUrl}/${id}`)
     }
     catch (err)
     {

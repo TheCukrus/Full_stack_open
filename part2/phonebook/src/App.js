@@ -11,7 +11,6 @@ const App = () =>
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
-
   const [notification, setNotification] = useState(null);
 
   const handleSubmit = (e) =>
@@ -19,11 +18,8 @@ const App = () =>
     e.preventDefault();
     //check if person exists in DB
     const check = persons.find((ele) => ele.name === newName);
-
-    const newContact = {
-      name: newName,
-      number: newNumber,
-    }
+    //Creating new contact
+    const newContact = { name: newName, number: newNumber, }
 
     if (check !== undefined)
     {
@@ -37,7 +33,7 @@ const App = () =>
       servises.post(newContact);
       setNotification({ "message": `Added ${newName}`, "nameOfClass": "success" });
     }
-
+    //Rerenders all contacts
     servises.getAll().then(persons => { setPersons(persons) })
 
     setNewName("");
@@ -48,7 +44,16 @@ const App = () =>
   {
     if (!window.confirm(`Delete ${name}?`)) return;
 
-    servises.remove(id);
+    const a = servises.remove(id);
+    a.then((b) =>
+    {
+      if (b === undefined)
+      {
+        return setNotification({ "message": `information of ${name} has already been removed from server`, "nameOfClass": "error" })
+      }
+    }
+    )
+
     servises.getAll()
       .then(persons => { setPersons(persons) })
     setNotification({ "message": `Removed ${name}`, "nameOfClass": "success" });
@@ -61,7 +66,7 @@ const App = () =>
   const handleSearch = (e) => setSearch(e.target.value);
 
   let shownContacts = persons;
-
+  //filter
   if (search !== "")
   {
     shownContacts = shownContacts.filter((contact) =>
@@ -69,19 +74,8 @@ const App = () =>
   }
 
   //useEffects
-  useEffect(() =>
-  {
-    servises.getAll()
-      .then(persons => { setPersons(persons) })
-  }, []);
-
-  useEffect(() =>
-  {
-    setTimeout(() =>
-    {
-      setNotification(null)
-    }, 5000)
-  }, [notification])
+  useEffect(() => { servises.getAll().then(persons => { setPersons(persons) }) }, []);
+  useEffect(() => { setTimeout(() => { setNotification(null) }, 5000) }, [notification])
 
   return (
     <div>
