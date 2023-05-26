@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
+import CountryFilter from "./CountryFilter.jsx";
+import CountryInfo from "./CountryInfo.jsx";
+import SearchBar from "./SearchBar.jsx";
 import servises from "./servises/countries.js";
+import Weather from "./Weather.jsx";
 
 const App = () =>
 {
   const [search, setSearch] = useState("")
   const [countries, setCountries] = useState([]);
-
+  const [weather, setWeather] = useState(null)
 
   //functions
   const fetchCountries = () =>
@@ -13,8 +17,6 @@ const App = () =>
     servises.searchCountry()
       .then(response => setCountries(response.data))
   }
-
-  // console.log(countries)
 
   const countryFilter = countries.filter((ele) =>
   {
@@ -26,53 +28,38 @@ const App = () =>
   //handlers
   const handleOnChange = (e) => setSearch(e.target.value)
 
-
   //useEffects
   useEffect(() =>
   {
     fetchCountries()
   }, [])
 
+  useEffect(() =>
+  {
+    if (countryFilter.length === 1)
+    {
+      let lat = countryFilter[0].capitalInfo.latlng[0];
+      let lon = countryFilter[0].capitalInfo.latlng[1];
+      servises.weatherData(lat, lon)
+        .then(response => setWeather(response.data));
+    }
+  }, [countryFilter.length])
 
+  console.log(weather)
   return (
     <div>
-      <div>
-        <span>find countries</span>
-        <input type="search" value={search} onChange={handleOnChange} />
-      </div>
+      <SearchBar search={search} handleOnChange={handleOnChange} />
       <br />
       <div>
         {countryFilter.length === 250 || countryFilter.length === 0 ? <p></p>
           : countryFilter.length < 250 && countryFilter.length > 10 ? <p>Too many matches, specify another filter</p>
             : countryFilter.length < 10 && countryFilter.length > 1
-              ? countryFilter.map((ele) =>
-              {
-                return (
-                  <div key={ele.name.common}>
-                    <span>{ele.name.common}</span>
-                    <input
-                      type="button"
-                      value="show"
-                      onClick={() => servises.findCountryByName(ele.name.common)
-                        .then(response => setCountries([response.data]))
-                      } />
-                  </div>
-                )
-              }
-              )
+              ? countryFilter.map((ele) => <CountryFilter key={ele.name.common} name={ele.name.common} setCountries={setCountries} />)
               :
-              <div>
-                <h1>{countryFilter[0].name.common}</h1>
-                Capital {countryFilter[0].capital[0]} <br />
-                Area {countryFilter[0].area}
-                <h3>languages:</h3>
-                <ul>
-                  {Object.values(countryFilter[0].languages).map((ele) => <li key={ele}>{ele}</li>)}
-                </ul>
-
-                <img src={countryFilter[0].flags.png} alt={countryFilter[0].flags.alt} />
-              </div>
-
+              <>
+                <CountryInfo countryFilter={countryFilter} />
+                <Weather weather={weather} />
+              </>
         }
 
       </div>
@@ -81,8 +68,3 @@ const App = () =>
 }
 
 export default App;
-
-/*
-https://studies.cs.helsinki.fi/restcountries/api/all
-https://studies.cs.helsinki.fi/restcountries/api/name/{name}
-*/
