@@ -16,4 +16,17 @@ const searchCountry = async (name) =>
     }
 }
 
-export default { searchCountry }
+const findCountryByName = async (name) =>
+{
+    try
+    {
+        const response = await axios.get(`${countriesByName}${name}`);
+        return response;
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+
+export default { searchCountry, findCountryByName }

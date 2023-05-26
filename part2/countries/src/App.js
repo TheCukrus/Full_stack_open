@@ -40,10 +40,26 @@ const App = () =>
         <span>find countries</span>
         <input type="search" value={search} onChange={handleOnChange} />
       </div>
+      <br />
       <div>
         {countryFilter.length === 250 || countryFilter.length === 0 ? <p></p>
           : countryFilter.length < 250 && countryFilter.length > 10 ? <p>Too many matches, specify another filter</p>
-            : countryFilter.length < 10 && countryFilter.length > 1 ? countryFilter.map((ele) => <p key={ele.name.common}>{ele.name.common}</p>)
+            : countryFilter.length < 10 && countryFilter.length > 1
+              ? countryFilter.map((ele) =>
+              {
+                return (
+                  <div key={ele.name.common}>
+                    <span>{ele.name.common}</span>
+                    <input
+                      type="button"
+                      value="show"
+                      onClick={() => servises.findCountryByName(ele.name.common)
+                        .then(response => setCountries([response.data]))
+                      } />
+                  </div>
+                )
+              }
+              )
               :
               <div>
                 <h1>{countryFilter[0].name.common}</h1>
