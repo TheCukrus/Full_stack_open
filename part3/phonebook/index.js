@@ -27,7 +27,7 @@ const persons = [
 ]
 
 
-index.get(`api/persons`, (request, response) =>
+index.get(`/api/persons`, (request, response) =>
 {
     response.json(persons);
 })
