@@ -52,5 +52,20 @@ index.get(`/api/persons/:id`, (request, response) =>
     }
 })
 
+index.delete(`/api/persons/:id`, (request, response) =>
+{
+    const id = Number(request.params.id);
+
+
+    const person = persons.find((ele) => ele.id === id)
+    if (!person)
+    {
+        return response.status(204).end();
+    }
+    const index = persons.indexOf(person);
+    persons.splice(index, 1);
+    response.status(204).end();
+})
+
 const PORT = 3001;
 index.listen(PORT, () => console.log(`Server running on port ${PORT}`))
