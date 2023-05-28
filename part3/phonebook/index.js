@@ -37,5 +37,20 @@ index.get(`/api/info`, (request, response) =>
     )
 })
 
+index.get(`/api/persons/:id`, (request, response) =>
+{
+    const id = Number(request.params.id);
+    const person = persons.find(person => person.id === id);
+
+    if (person)
+    {
+        response.send(person);
+    }
+    else
+    {
+        response.status(404).end();
+    }
+})
+
 const PORT = 3001;
 index.listen(PORT, () => console.log(`Server running on port ${PORT}`))
