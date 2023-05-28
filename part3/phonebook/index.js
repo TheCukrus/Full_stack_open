@@ -27,11 +27,15 @@ const persons = [
 ]
 
 
-index.get(`/api/persons`, (request, response) =>
-{
-    response.json(persons);
-})
+index.get(`/api/persons`, (request, response) => response.json(persons))
 
+index.get(`/api/info`, (request, response) =>
+{
+    response.send(
+        `<p>Phonebook has info for ${persons.length}</p>
+        <p>${new Date}</p>`
+    )
+})
 
 const PORT = 3001;
 index.listen(PORT, () => console.log(`Server running on port ${PORT}`))
