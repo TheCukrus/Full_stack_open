@@ -26,6 +26,8 @@ const persons = [
     }
 ]
 
+//middlewares
+index.use(express.json())
 
 index.get(`/api/persons`, (request, response) => response.json(persons))
 
@@ -65,6 +67,20 @@ index.delete(`/api/persons/:id`, (request, response) =>
     const index = persons.indexOf(person);
     persons.splice(index, 1);
     response.status(204).end();
+})
+
+index.post(`/api/persons`, (request, response) =>
+{
+    const newEntrie = {
+        "id": Math.floor(Math.random() * 10000),
+        "name": request.body.name,
+        "number": request.body.number
+    }
+
+    persons.push(newEntrie)
+
+    response.status(201)
+    response.json(newEntrie)
 })
 
 const PORT = 3001;
