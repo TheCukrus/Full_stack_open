@@ -71,6 +71,27 @@ index.delete(`/api/persons/:id`, (request, response) =>
 
 index.post(`/api/persons`, (request, response) =>
 {
+    const { name, number } = request.body;
+    //checks
+    if (!name)
+    {
+        response.status(400).json({ error: "Name must not be empty" })
+        return;
+    }
+
+    if (!number)
+    {
+        response.status(400).json({ error: "Number must not be empty" })
+        return;
+    }
+
+    if (persons.find(ele => ele.name === name))
+    {
+        response.status(400).json({ error: "Name must be unique" })
+        return;
+    }
+
+
     const newEntrie = {
         "id": Math.floor(Math.random() * 10000),
         "name": request.body.name,
