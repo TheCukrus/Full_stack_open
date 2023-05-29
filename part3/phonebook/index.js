@@ -27,9 +27,6 @@ const persons = [
     }
 ]
 
-const customLogger = morgan("tiny");
-
-
 morgan.token("body", function getBody(req)
 {
     return JSON.stringify(req.body);
