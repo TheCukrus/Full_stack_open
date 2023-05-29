@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import morgan from "morgan";
 
 
@@ -29,10 +29,17 @@ const persons = [
 
 const customLogger = morgan("tiny");
 
+
+morgan.token("body", function getBody(req)
+{
+    return JSON.stringify(req.body);
+})
+
 //middlewares
 index.use(express.json());
 
-index.use(customLogger);
+// index.use(customLogger);
+index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
 
 index.get(`/api/persons`, (request, response) => response.json(persons))
 
