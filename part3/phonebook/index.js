@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 
 
 const index = express();
@@ -26,8 +27,12 @@ const persons = [
     }
 ]
 
+const customLogger = morgan("tiny");
+
 //middlewares
-index.use(express.json())
+index.use(express.json());
+
+index.use(customLogger);
 
 index.get(`/api/persons`, (request, response) => response.json(persons))
 
@@ -37,7 +42,7 @@ index.get(`/api/info`, (request, response) =>
         `<p>Phonebook has info for ${persons.length}</p>
         <p>${new Date}</p>`
     )
-})
+});
 
 index.get(`/api/persons/:id`, (request, response) =>
 {
