@@ -1,5 +1,6 @@
-import express, { response } from "express";
+import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 
 
 const index = express();
@@ -34,7 +35,7 @@ morgan.token("body", function getBody(req)
 
 //middlewares
 index.use(express.json());
-
+index.use(cors())
 // index.use(customLogger);
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
 

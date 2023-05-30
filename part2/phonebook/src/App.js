@@ -74,7 +74,8 @@ const App = () =>
   }
 
   //useEffects
-  useEffect(() => { servises.getAll().then(persons => { setPersons(persons) }) }, []);
+  useEffect(() =>
+  { servises.getAll().then(persons => { setPersons(persons) }) }, []);
   useEffect(() => { setTimeout(() => { setNotification(null) }, 5000) }, [notification])
 
   return (
