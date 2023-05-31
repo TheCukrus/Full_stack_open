@@ -36,7 +36,7 @@ morgan.token("body", function getBody(req)
 //middlewares
 index.use(express.json());
 index.use(cors())
-// app.use(express.static('build'))
+app.use(express.static('build'))
 
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
 
@@ -116,4 +116,4 @@ index.post(`/api/persons`, (request, response) =>
 })
 
 const PORT = 3001;
-index.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+index.listen(process.env.PORT || PORT, () => console.log(`Server running on port ${PORT}`))
