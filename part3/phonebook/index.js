@@ -36,7 +36,7 @@ morgan.token("body", function getBody(req)
 //middlewares
 index.use(express.json());
 index.use(cors())
-// app.use(express.static('build'))
+app.use(express.static('build'))
 
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
 
