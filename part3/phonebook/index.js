@@ -1,6 +1,15 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from "dotenv";
+import modelPerson from "./models/persons.js";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: `${__dirname}/.env` });
 
 
 const index = express();
@@ -37,17 +46,39 @@ morgan.token("body", function getBody(req)
 index.use(express.json());
 index.use(cors())
 index.use(express.static('build'))
- 
+
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
 
-index.get(`/api/persons`, (request, response) => response.json(persons))
-
-index.get(`/api/info`, (request, response) =>
+//GET all persons contacts
+index.get(`/api/persons`, async (request, response) =>
 {
-    response.send(
-        `<p>Phonebook has info for ${persons.length}</p>
-        <p>${new Date}</p>`
-    )
+    try
+    {
+        const persons = await modelPerson.find();
+        response.json(persons)
+    }
+    catch (err)
+    {
+        console.log(err)
+    }
+})
+
+index.get(`/api/info`, async (request, response) =>
+{
+    try
+    {
+        const persons = await modelPerson.find();
+        
+        response.send(
+            `<p>Phonebook has info for ${persons.length}</p>
+            <p>${new Date}</p>`
+        )
+
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
 });
 
 index.get(`/api/persons/:id`, (request, response) =>
@@ -116,4 +147,5 @@ index.post(`/api/persons`, (request, response) =>
 })
 
 const PORT = 3001;
+
 index.listen(process.env.PORT || PORT, () => console.log(`Server running on port ${PORT}`))
