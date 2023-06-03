@@ -94,18 +94,26 @@ index.get(`/api/info`, async (request, response, next) =>
     }
 });
 
-index.get(`/api/persons/:id`, (request, response) =>
+//GET person data by it ID
+index.get(`/api/persons/:id`, async (request, response, next) =>
 {
-    const id = Number(request.params.id);
-    const person = persons.find(person => person.id === id);
+    try
+    {
+        const person = await modelPerson.findById(request.params.id);
 
-    if (person)
-    {
-        response.send(person);
+        if (!person)
+        {
+            response.status(400).end();
+        }
+
+        if (person)
+        {
+            response.send(person)
+        }
     }
-    else
+    catch (err)
     {
-        response.status(404).end();
+        next(err);
     }
 })
 
