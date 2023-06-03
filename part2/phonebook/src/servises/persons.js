@@ -1,6 +1,16 @@
 import axios from "axios";
 
-const baseUrl = `https://tester-0fyf.onrender.com/api/persons`;
+// const baseUrl = `https://tester-0fyf.onrender.com/api/persons`;
+// const baseUrl = `http://localhost:3001/api/persons`;
+let baseUrl
+if (process.env.NODE_ENV === "development")
+{
+    baseUrl = `http://localhost:3001/api/persons`;
+}
+else
+{
+    baseUrl = `https://tester-0fyf.onrender.com/api/persons`;
+}
 
 const getAll = async () =>
 {

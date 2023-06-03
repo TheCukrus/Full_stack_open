@@ -37,6 +37,17 @@ const persons = [
     }
 ]
 
+const errorHandling = (err, request, response, next) =>
+{
+    console.log(err.message)
+
+    if (err.message === "CastError")
+    {
+        return response.status(400).send({ err: "malformated id" })
+    }
+    next(err)
+}
+
 morgan.token("body", function getBody(req)
 {
     return JSON.stringify(req.body);
@@ -48,9 +59,10 @@ index.use(cors())
 index.use(express.static('build'))
 
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
+index.use(errorHandling);
 
 //GET all persons contacts
-index.get(`/api/persons`, async (request, response) =>
+index.get(`/api/persons`, async (request, response, next) =>
 {
     try
     {
@@ -59,12 +71,12 @@ index.get(`/api/persons`, async (request, response) =>
     }
     catch (err)
     {
-        console.log(err)
+        next(err)
     }
 })
 
 //GET all persons contacts
-index.get(`/api/info`, async (request, response) =>
+index.get(`/api/info`, async (request, response, next) =>
 {
     try
     {
@@ -78,7 +90,7 @@ index.get(`/api/info`, async (request, response) =>
     }
     catch (err)
     {
-        console.log(err);
+        next(err)
     }
 });
 
@@ -98,7 +110,7 @@ index.get(`/api/persons/:id`, (request, response) =>
 })
 
 //REMOVE the person from phonebook
-index.delete(`/api/persons/:id`, async (request, response) =>
+index.delete(`/api/persons/:id`, async (request, response, next) =>
 {
     try
     {
@@ -108,16 +120,17 @@ index.delete(`/api/persons/:id`, async (request, response) =>
         {
             return response.status(400).end();
         }
+
         response.status(204).end();
     }
     catch (err)
     {
-        console.log(err)
+        next(err)
     }
 })
 
 //POST create a new person contact
-index.post(`/api/persons`, async (request, response) =>
+index.post(`/api/persons`, async (request, response, next) =>
 {
     const { name, number } = request.body;
     //checks
@@ -142,7 +155,6 @@ index.post(`/api/persons`, async (request, response) =>
         // }
 
         const newEntrie = {
-            "id": Math.floor(Math.random() * 10000),
             "name": request.body.name,
             "number": request.body.number
         }
@@ -154,7 +166,7 @@ index.post(`/api/persons`, async (request, response) =>
     }
     catch (err)
     {
-        console.log(err);
+        next(err)
     }
 })
 
