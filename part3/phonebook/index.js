@@ -63,12 +63,13 @@ index.get(`/api/persons`, async (request, response) =>
     }
 })
 
+//GET all persons contacts
 index.get(`/api/info`, async (request, response) =>
 {
     try
     {
         const persons = await modelPerson.find();
-        
+
         response.send(
             `<p>Phonebook has info for ${persons.length}</p>
             <p>${new Date}</p>`
@@ -111,39 +112,46 @@ index.delete(`/api/persons/:id`, (request, response) =>
     response.status(204).end();
 })
 
-index.post(`/api/persons`, (request, response) =>
+//POST create a new person contact
+index.post(`/api/persons`, async (request, response) =>
 {
     const { name, number } = request.body;
     //checks
-    if (!name)
+    try
     {
-        response.status(400).json({ error: "Name must not be empty" })
-        return;
-    }
+        if (!name)
+        {
+            response.status(400).json({ error: "Name must not be empty" })
+            return;
+        }
 
-    if (!number)
+        if (!number)
+        {
+            response.status(400).json({ error: "Number must not be empty" })
+            return;
+        }
+
+        // if (persons.find(ele => ele.name === name))
+        // {
+        //     response.status(400).json({ error: "Name must be unique" })
+        //     return;
+        // }
+
+        const newEntrie = {
+            "id": Math.floor(Math.random() * 10000),
+            "name": request.body.name,
+            "number": request.body.number
+        }
+
+        await modelPerson.create(newEntrie);
+
+        response.status(201)
+        response.json(newEntrie)
+    }
+    catch (err)
     {
-        response.status(400).json({ error: "Number must not be empty" })
-        return;
+        console.log(err);
     }
-
-    if (persons.find(ele => ele.name === name))
-    {
-        response.status(400).json({ error: "Name must be unique" })
-        return;
-    }
-
-
-    const newEntrie = {
-        "id": Math.floor(Math.random() * 10000),
-        "name": request.body.name,
-        "number": request.body.number
-    }
-
-    persons.push(newEntrie)
-
-    response.status(201)
-    response.json(newEntrie)
 })
 
 const PORT = 3001;
