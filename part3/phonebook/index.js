@@ -109,6 +109,27 @@ index.get(`/api/persons/:id`, (request, response) =>
     }
 })
 
+//PUT the update person
+index.put(`/api/persons/:id`, async (request, response, next) =>
+{
+    try
+    {
+        const body =
+        {
+            "name": request.body.name,
+            "number": request.body.number
+        }
+
+        await modelPerson.findByIdAndUpdate(request.params.id, body, { new: true });
+
+        response.status(200).json({ message: "successfull update" })
+    }
+    catch (err)
+    {
+        next(err)
+    }
+})
+
 //REMOVE the person from phonebook
 index.delete(`/api/persons/:id`, async (request, response, next) =>
 {
@@ -147,12 +168,6 @@ index.post(`/api/persons`, async (request, response, next) =>
             response.status(400).json({ error: "Number must not be empty" })
             return;
         }
-
-        // if (persons.find(ele => ele.name === name))
-        // {
-        //     response.status(400).json({ error: "Name must be unique" })
-        //     return;
-        // }
 
         const newEntrie = {
             "name": request.body.name,
