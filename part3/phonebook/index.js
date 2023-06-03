@@ -97,19 +97,23 @@ index.get(`/api/persons/:id`, (request, response) =>
     }
 })
 
-index.delete(`/api/persons/:id`, (request, response) =>
+//REMOVE the person from phonebook
+index.delete(`/api/persons/:id`, async (request, response) =>
 {
-    const id = Number(request.params.id);
-
-
-    const person = persons.find((ele) => ele.id === id)
-    if (!person)
+    try
     {
-        return response.status(204).end();
+        const person = await modelPerson.findByIdAndRemove(request.params.id)
+
+        if (!person)
+        {
+            return response.status(400).end();
+        }
+        response.status(204).end();
     }
-    const index = persons.indexOf(person);
-    persons.splice(index, 1);
-    response.status(204).end();
+    catch (err)
+    {
+        console.log(err)
+    }
 })
 
 //POST create a new person contact
