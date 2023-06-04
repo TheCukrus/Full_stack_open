@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// const baseUrl = `https://tester-0fyf.onrender.com/api/persons`;
-// const baseUrl = `http://localhost:3001/api/persons`;
 let baseUrl
 if (process.env.NODE_ENV === "development")
 {
@@ -22,6 +20,7 @@ const getAll = async () =>
     catch (err)
     {
         console.log(err);
+        return { "message": err.response.data.error, "nameOfClass": "error" }
     }
 }
 
@@ -30,23 +29,31 @@ const post = async (personData) =>
     try
     {
         const response = await axios.post(baseUrl, personData);
-        return response.data
+        return { "message": `Added ${response.data.name}`, "nameOfClass": "success" }
     }
     catch (err)
     {
         console.log(err);
+        return { "message": err.response.data.error, "nameOfClass": "error" }
     }
 }
 
-const remove = async (id) =>
+const remove = async (id, name) =>
 {
     try
     {
-        return await axios.delete(`${baseUrl}/${id}`)
+        await axios.delete(`${baseUrl}/${id}`)
+        return { "message": `Removed ${name}`, "nameOfClass": "success" }
+
     }
     catch (err)
     {
         console.log(err);
+        if (!err.response.data)
+        {
+            return { "message": "Person already removed", "nameOfClass": "error" }
+        }
+        return { "message": err.response.data.error, "nameOfClass": "error" }
     }
 }
 
@@ -54,11 +61,14 @@ const update = async (id, data) =>
 {
     try
     {
-        return await axios.put(`${baseUrl}/${id}`, data);
+        await axios.put(`${baseUrl}/${id}`, data);
+        return { "message": `Updated ${data.name}`, "nameOfClass": "success" }
+
     }
     catch (err)
     {
         console.log(err);
+        return { "message": err.response.data.error, "nameOfClass": "error" }
     }
 }
 

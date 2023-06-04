@@ -25,13 +25,13 @@ const App = () =>
     {
       if (!window.confirm(`${check.name} is already added to phonebook, replace the old number with a new one?`)) return;
 
-      servises.update(check.id, newContact);
-      setNotification({ "message": `Updated ${newName}`, "nameOfClass": "success" });
+      servises.update(check.id, newContact)
+        .then(message => setNotification(message))
     }
     else
     {
-      servises.post(newContact);
-      setNotification({ "message": `Added ${newName}`, "nameOfClass": "success" });
+      servises.post(newContact)
+        .then(message => setNotification(message))
     }
     //Rerenders all contacts
     servises.getAll().then(persons => { setPersons(persons) })
@@ -44,20 +44,12 @@ const App = () =>
   {
     if (!window.confirm(`Delete ${name}?`)) return;
 
-    const a = servises.remove(id);
-    a.then((b) =>
-    {
-      if (b === undefined)
-      {
-        return setNotification({ "message": `information of ${name} has already been removed from server`, "nameOfClass": "error" })
-      }
-    }
+    const removePerson = servises.remove(id, name);
+    removePerson.then((message) => setNotification(message)
     )
 
     servises.getAll()
       .then(persons => { setPersons(persons) })
-    setNotification({ "message": `Removed ${name}`, "nameOfClass": "success" });
-
   }
 
   //onchange
@@ -74,8 +66,7 @@ const App = () =>
   }
 
   //useEffects
-  useEffect(() =>
-  { servises.getAll().then(persons => { setPersons(persons) }) }, []);
+  useEffect(() => { servises.getAll().then(persons => { setPersons(persons) }) }, []);
   useEffect(() => { setTimeout(() => { setNotification(null) }, 5000) }, [notification])
 
   return (

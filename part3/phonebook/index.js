@@ -14,40 +14,20 @@ dotenv.config({ path: `${__dirname}/.env` });
 
 const index = express();
 
-const persons = [
-    {
-        "id": 1,
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": 2,
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": 3,
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": 4,
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    }
-]
-
 const errorHandling = (err, request, response, next) =>
 {
     console.log(err.message)
 
     if (err.message === "CastError")
     {
-        return response.status(400).send({ err: "malformated id" })
+        return response.status(400).send({ error: "malformated id" })
+    }
+    else if (err.name === 'ValidationError')
+    {
+        return response.status(400).json({ error: err.message })
     }
     next(err)
 }
-
 morgan.token("body", function getBody(req)
 {
     return JSON.stringify(req.body);
@@ -59,7 +39,6 @@ index.use(cors())
 index.use(express.static('build'))
 
 index.use(morgan(":method :url :status :total-time :req[header] :response-time :body "))
-index.use(errorHandling);
 
 //GET all persons contacts
 index.get(`/api/persons`, async (request, response, next) =>
@@ -192,6 +171,9 @@ index.post(`/api/persons`, async (request, response, next) =>
         next(err)
     }
 })
+
+
+index.use(errorHandling);
 
 const PORT = 3001;
 
