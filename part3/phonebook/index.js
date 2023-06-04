@@ -28,6 +28,7 @@ const errorHandling = (err, request, response, next) =>
     }
     next(err)
 }
+
 morgan.token("body", function getBody(req)
 {
     return JSON.stringify(req.body);
