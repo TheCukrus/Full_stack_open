@@ -74,4 +74,43 @@ const mostBlogs = (blogs) =>
     return authorWithMostBlogs
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogs) =>
+{
+    //Arr where we send all blogs
+    const blogsArr = [];
+    //Filter blogs so if blog exists in "blogsArr" then sum likes from post
+    blogs.map((ele) => 
+    {
+        let checkForExistance = blogsArr.find(blog => blog.author === ele.author)
+        let checkIndex = blogsArr.indexOf(checkForExistance)
+
+        if (!checkForExistance)
+        {
+            blogsArr.push({ "author": ele.author, "likes": ele.likes })
+        }
+        else
+        {
+            const newValue = { "author": checkForExistance.author, "likes": blogsArr[checkIndex].likes + ele.likes }
+            blogsArr.splice(checkIndex, 1, newValue)
+        }
+    })
+
+    let authorWithMostLikes = null;
+    //Find author with the most likes throw all posts
+    blogsArr.map((ele) =>
+    {
+        if (!authorWithMostLikes)
+        {
+            authorWithMostLikes = ele
+        }
+
+        if (authorWithMostLikes.likes < ele.likes)
+        {
+            authorWithMostLikes = ele
+        }
+    })
+
+    return authorWithMostLikes
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }

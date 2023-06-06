@@ -139,7 +139,27 @@ describe("Most blogs", () =>
     test("from the list of blogs find author with most posted blogs", () =>
     {
         const result = listHelper.mostBlogs(blogs)
-        expect(result).toEqual({ "author": "Robert C. Martin", blogs: 3 })
+        expect(result).toEqual({ "author": "Robert C. Martin", "blogs": 3 })
     })
 })
 
+describe("Most likes", () =>
+{
+    test("from empty blog list", () =>
+    {
+        const result = listHelper.mostLikes([])
+        expect(result).toBe(null)
+    })
+
+    test("from one blog", () =>
+    {
+        const result = listHelper.mostLikes(listWithOneBlog)
+        expect(result).toEqual({ "author": "Edsger W. Dijkstra", "likes": 5 })
+    })
+
+    test("from the list of blogs find author with most likes", () =>
+    {
+        const result = listHelper.mostLikes(blogs)
+        expect(result).toEqual({ "author": "Edsger W. Dijkstra", "likes": 17 })
+    })
+})
