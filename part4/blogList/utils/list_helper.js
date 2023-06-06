@@ -10,4 +10,28 @@ const totalLikes = (blogs) =>
     return likeCounter;
 }
 
-module.exports = { dummy, totalLikes }
+const favoriteBlog = (blogs) =>
+{
+    if (blogs.length === 0)
+    {
+        return null
+    }
+
+    let highest = 0;
+    let blog = {}
+    blogs.map((ele) =>
+    {
+        if (ele.likes > highest)
+        {
+            highest = ele.likes
+            blog = {
+                "title": ele.title,
+                "author": ele.author,
+                "likes": ele.likes
+            }
+        }
+    })
+    return blog
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog }
