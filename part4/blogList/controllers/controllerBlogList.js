@@ -3,14 +3,10 @@ const express = require("express");
 
 const blogListRouter = express.Router();
 
-blogListRouter.get("/", (request, response) =>
+blogListRouter.get("/", async (request, response) =>
 {
-    Blog
-        .find({})
-        .then(blogs =>
-        {
-            response.json(blogs)
-        })
+    const result = await Blog.find({})
+    response.status(200).json(result)
 })
 
 blogListRouter.post("/", (request, response) =>
