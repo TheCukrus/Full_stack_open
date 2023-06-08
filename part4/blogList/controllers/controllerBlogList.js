@@ -17,6 +17,26 @@ blogListRouter.get("/", async (request, response) =>
     }
 })
 
+blogListRouter.get("/:id", async (request, response) =>
+{
+    try
+    {
+        const result = await blog.find({ "id": request.params._id })
+
+        if (result.length === 0)
+        {
+            return response.status(404).end()
+        }
+
+        response.status(200).json(result)
+    }
+    catch (err)
+    {
+        logger.error(err)
+    }
+})
+
+
 blogListRouter.post("/", async (request, response) =>
 {
     try
@@ -26,12 +46,32 @@ blogListRouter.post("/", async (request, response) =>
             response.status(400).json({ message: logger.error("Input missing") })
         }
 
-        const result = await blog.create(request.body)
+        await blog.create(request.body)
         response.status(201).json(request.body)
     }
     catch (err)
     {
         logger.error(err);
+    }
+})
+
+blogListRouter.delete("/:id", async (request, response) =>
+{
+    try
+    {
+        await blog.findByIdAndDelete(request.params.id)
+
+        const check = await blog.find({ "id": request.params.id })
+
+        if (check.length === 0)
+        {
+            return response.status(204).end()
+        }
+        return response.status(400).end()
+    }
+    catch (err)
+    {
+        logger.error(err)
     }
 })
 

@@ -12,8 +12,10 @@ I will constantly keep an eye on the state of the server to make sure that the d
 
 I will keep an eye on the database: does the backend save data there in the right format
 
-I progress with small steps
+I will progress in small steps
 
-I will write lots of console.log statements to make sure I understand how the code behaves and to help pinpoint problems
+I will write lots of console.log statements to make sure I understand how the code and the tests behave and to help pinpoint problems
 
 If my code does not work, I will not write more code. Instead, I start deleting the code until it works or just return to a state when everything was still working
+
+If a test does not pass, I make sure that the tested functionality for sure works in the application
