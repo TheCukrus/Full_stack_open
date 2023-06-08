@@ -79,6 +79,34 @@ test("create a new blog wihout likes value", async () =>
     expect(findBlog.likes).toBe(0)
 })
 
+test("Check if title exists", async () =>
+{
+    const newBlog = {
+        "author": "creator",
+        "url": "http://127.0.0.1:4000/api/blogs",
+        "likes": 20
+    }
+
+    api.post("/api/blogs").send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+})
+
+test("Check if url exists", async () =>
+{
+    const newBlog = {
+        "title": "temptemp",
+        "author": "creator",
+        "likes": 20
+    }
+
+    api.post("/api/blogs").send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+})
+
+
+
 afterAll(async () =>
 {
     await mongoose.connection.close()

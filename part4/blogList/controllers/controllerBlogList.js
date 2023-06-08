@@ -21,6 +21,11 @@ blogListRouter.post("/", async (request, response) =>
 {
     try
     {
+        if (!request.body.title || !request.body.url)
+        {
+            response.status(400).json({ message: logger.error("Input missing") })
+        }
+
         const result = await blog.create(request.body)
         response.status(201).json(request.body)
     }
