@@ -29,8 +29,20 @@ test('Find one blog', async () =>
 
     const temp = response.body;
 
-    expect(temp.length).toBe(1);
+    expect(temp.length).toBe(2);
 
+})
+
+test("Blog post have 'id' as the unique identifier", async () =>
+{
+    const response = await api.get("/api/blogs")
+    const blogPost = response.body;
+
+    blogPost.forEach(ele =>
+    {
+        expect(ele.id).toBeDefined();
+        expect(ele._id).toBeUndefined();
+    });
 })
 
 afterAll(async () =>
