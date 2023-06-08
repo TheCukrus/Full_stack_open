@@ -182,6 +182,19 @@ describe("Testing HTTP DELETE api", () =>
     })
 })
 
+describe("Testing HTTP PUT api", () =>
+{
+    test("successfull update blog", async () =>
+    {
+        const updateBlog = initialBlogs[0]
+
+        const result = await api.put(`/api/blogs/${updateBlog._id}`)
+            .send({ "likes": 10 })
+
+        expect(result.status).toBe(200)
+    })
+})
+
 afterAll(async () =>
 {
     await mongoose.connection.close()
