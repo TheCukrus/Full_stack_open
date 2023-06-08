@@ -4,23 +4,6 @@ const app = require("../app")
 
 const api = supertest(app)
 
-// test('create a blog', async () =>
-// {
-//     const newBlog = {
-//         "title": "test",
-//         "author": "creator",
-//         "url": "http://127.0.0.1:4000/api/blogs",
-//         "likes": 20
-//     }
-
-//     await api
-//         .post('/api/blogs')
-//         .send(newBlog)
-//         .expect(201)
-//         .expect('Content-Type', /application\/json/)
-
-// })
-
 test('Find one blog', async () =>
 {
     const response = await api.get('/api/blogs')
@@ -44,6 +27,38 @@ test("Blog post have 'id' as the unique identifier", async () =>
         expect(ele._id).toBeUndefined();
     });
 })
+
+test('create a blog', async () =>
+{
+
+    const blogsData = await api.get("/api/blogs")
+    const blogsLength = blogsData.body.length;
+
+
+    const newBlog = {
+        "title": "test",
+        "author": "creator",
+        "url": "http://127.0.0.1:4000/api/blogs",
+        "likes": 20
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    //Get the updated number of blogs 
+    const response = await api.get("/api/blogs")
+    const newLength = response.body.length;
+
+    expect(newLength).toBe(blogsLength + 1);
+
+    const createBlog = response.body.find(blog => blog.title === newBlog.title);
+    expect(createBlog).toBeDefined()
+
+})
+
 
 afterAll(async () =>
 {
