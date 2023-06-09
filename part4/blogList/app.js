@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use("/api/blogs", controllerBlogList)
-app.use("/api/user", controllerUser)
+app.use("/api/users", controllerUser)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
