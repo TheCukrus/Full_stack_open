@@ -1,6 +1,7 @@
 const blog = require("../models/modelBlogList");
 const express = require("express");
-const logger = require("../utils/logger")
+const logger = require("../utils/logger");
+const modelUser = require("../models/modelUser");
 
 const blogListRouter = express.Router();
 
@@ -8,7 +9,7 @@ blogListRouter.get("/", async (request, response) =>
 {
     try
     {
-        const result = await blog.find({})
+        const result = await blog.find({}).populate("user", { "username": 1, "name": 1 })
         response.status(200).json(result)
     }
     catch (err)
@@ -46,7 +47,20 @@ blogListRouter.post("/", async (request, response) =>
             response.status(400).json({ message: logger.error("Input missing") })
         }
 
-        await blog.create(request.body)
+        const user = await modelUser.findById(request.body.user)
+
+        const newBlog = new blog({
+            "title": request.body.title,
+            "author": request.body.author,
+            "url": request.body.url,
+            "likes": request.body.likes,
+            "user": user.id
+        })
+
+        const savedBlog = await newBlog.save()
+        user.blogs = user.blogs.concat(savedBlog._id)
+        await user.save()
+
         response.status(201).json(request.body)
     }
     catch (err)

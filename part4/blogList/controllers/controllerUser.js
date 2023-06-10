@@ -9,7 +9,7 @@ controllerUser.get("/", async (request, response) =>
 {
     try
     {
-        const users = await modelUser.find({})
+        const users = await modelUser.find({}).populate("blogs", { "url": 1, "title": 1, "author": 1, })
 
         response.status(200).json(users)
     }
