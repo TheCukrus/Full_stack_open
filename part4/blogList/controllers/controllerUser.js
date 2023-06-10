@@ -23,17 +23,40 @@ controllerUser.post("/", async (request, response) =>
 {
     const { username, name, password } = request.body
 
+    if (!username)
+    {
+        return response.status(400).json({ message: "Username field is empty" })
+    }
+
+    if (!password)
+    {
+        return response.status(400).json({ message: "Password field is empty" })
+    }
+
+    if (username.length < 3 || password.length < 3)
+    {
+        return response.status(400).json({ message: "input must contain minimum 3 characters" })
+    }
+
     const setRounds = 10;
     const passwordHash = await bcrypt.hash(password, setRounds)
     try
     {
+
+        const usernameChecker = await modelUser.find({ "username": username })
+
+        if (usernameChecker.length !== 0)
+        {
+            return response.status(400).json({ message: "Username is taken" })
+        }
+
         const newUser = await modelUser.create({
             "username": username,
             "name": name,
             "password": passwordHash
         })
 
-        response.status(201).json(newUser)
+        response.status(201).json({ message: "User created" })
     }
     catch (err)
     {
