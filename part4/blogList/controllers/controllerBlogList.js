@@ -2,8 +2,20 @@ const blog = require("../models/modelBlogList");
 const express = require("express");
 const logger = require("../utils/logger");
 const modelUser = require("../models/modelUser");
+const jwt = require("jsonwebtoken")
 
 const blogListRouter = express.Router();
+
+//Check for token
+const getTokenFrom = request =>
+{
+    const authorization = request.get("authorization")
+    if (authorization && authorization.startsWith("Bearer "))
+    {
+        return authorization.replace("Bearer ", "")
+    }
+    return null
+}
 
 blogListRouter.get("/", async (request, response) =>
 {
@@ -42,12 +54,21 @@ blogListRouter.post("/", async (request, response) =>
 {
     try
     {
-        if (!request.body.title || !request.body.url)
+        const token = getTokenFrom(request)
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        if (!decodedToken.id)
         {
-            response.status(400).json({ message: logger.error("Input missing") })
+            return response.status(401).json({ message: "Token invalid" })
         }
 
-        const user = await modelUser.findById(request.body.user)
+        const user = await modelUser.findById(decodedToken.id)
+
+        if (!request.body.title || !request.body.url)
+        {
+            return response.status(400).json({ message: logger.error("Input missing") })
+        }
+
+        // const user = await modelUser.findById(request.body.user)
 
         const newBlog = new blog({
             "title": request.body.title,
@@ -61,11 +82,12 @@ blogListRouter.post("/", async (request, response) =>
         user.blogs = user.blogs.concat(savedBlog._id)
         await user.save()
 
-        response.status(201).json(request.body)
+        response.status(201).json(savedBlog)
     }
     catch (err)
     {
         logger.error(err);
+        response.status(500).json({ message: "Internal server error" })
     }
 })
 
