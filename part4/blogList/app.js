@@ -4,6 +4,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const controllerBlogList = require("./controllers/controllerBlogList");
 const controllerUser = require("./controllers/controllerUser")
+const controllerLogin = require("./controllers/controllerLogin")
 const { MONGODB } = require("./utils/config")
 const logger = require("./utils/logger")
 const middleware = require("./utils/middleware")
@@ -19,6 +20,7 @@ app.use(middleware.requestLogger)
 
 app.use("/api/blogs", controllerBlogList)
 app.use("/api/users", controllerUser)
+app.use("/api/login", controllerLogin)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
