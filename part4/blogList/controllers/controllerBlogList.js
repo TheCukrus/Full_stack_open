@@ -54,8 +54,8 @@ blogListRouter.post("/", async (request, response) =>
 {
     try
     {
-        const token = getTokenFrom(request)
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
+
         if (!decodedToken.id)
         {
             return response.status(401).json({ message: "Token invalid" })
@@ -67,8 +67,6 @@ blogListRouter.post("/", async (request, response) =>
         {
             return response.status(400).json({ message: logger.error("Input missing") })
         }
-
-        // const user = await modelUser.findById(request.body.user)
 
         const newBlog = new blog({
             "title": request.body.title,
