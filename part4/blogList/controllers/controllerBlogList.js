@@ -42,14 +42,11 @@ blogListRouter.post("/", async (request, response) =>
 {
     try
     {
-        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
 
-        if (!decodedToken.id)
+        if (!request.token.id)
         {
             return response.status(401).json({ message: "Token invalid" })
         }
-
-        const user = await modelUser.findById(decodedToken.id)
 
         if (!request.body.title || !request.body.url)
         {
@@ -61,12 +58,12 @@ blogListRouter.post("/", async (request, response) =>
             "author": request.body.author,
             "url": request.body.url,
             "likes": request.body.likes,
-            "user": user.id
+            "user": request.user.id
         })
 
         const savedBlog = await newBlog.save()
-        user.blogs = user.blogs.concat(savedBlog._id)
-        await user.save()
+        request.user.blogs = request.user.blogs.concat(savedBlog._id)
+        await request.user.save()
 
         response.status(201).json(savedBlog)
     }
@@ -95,16 +92,15 @@ blogListRouter.delete("/:id", async (request, response) =>
 {
     try
     {
-        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
 
-        if (!decodedToken.id)
+        if (!request.token.id)
         {
             return response.status(401).json({ message: "Token invalid" })
         }
 
         const blogCheck = await blog.findById(request.params.id)
 
-        if (!(blogCheck.user.toString() === decodedToken.id))
+        if (!(blogCheck.user.toString() === request.user.id))
         {
             return response.status(400).json({ message: "Delete this blog can only creator" })
         }
