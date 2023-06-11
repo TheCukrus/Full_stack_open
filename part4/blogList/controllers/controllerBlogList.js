@@ -6,17 +6,6 @@ const jwt = require("jsonwebtoken")
 
 const blogListRouter = express.Router();
 
-//Check for token
-const getTokenFrom = request =>
-{
-    const authorization = request.get("authorization")
-    if (authorization && authorization.startsWith("Bearer "))
-    {
-        return authorization.replace("Bearer ", "")
-    }
-    return null
-}
-
 blogListRouter.get("/", async (request, response) =>
 {
     try
@@ -48,7 +37,6 @@ blogListRouter.get("/:id", async (request, response) =>
         logger.error(err)
     }
 })
-
 
 blogListRouter.post("/", async (request, response) =>
 {
@@ -107,11 +95,23 @@ blogListRouter.delete("/:id", async (request, response) =>
 {
     try
     {
-        await blog.findByIdAndDelete(request.params.id)
+        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
 
-        const check = await blog.find({ "id": request.params.id })
+        if (!decodedToken.id)
+        {
+            return response.status(401).json({ message: "Token invalid" })
+        }
 
-        if (check.length === 0)
+        const blogCheck = await blog.findById(request.params.id)
+
+        if (!(blogCheck.user.toString() === decodedToken.id))
+        {
+            return response.status(400).json({ message: "Delete this blog can only creator" })
+        }
+
+        const check = await blog.deleteOne({ "_id": request.params.id })
+
+        if (check.deletedCount === 1)
         {
             return response.status(204).end()
         }
@@ -120,6 +120,7 @@ blogListRouter.delete("/:id", async (request, response) =>
     catch (err)
     {
         logger.error(err)
+        response.status(500).json({ message: "Internal server error" })
     }
 })
 
