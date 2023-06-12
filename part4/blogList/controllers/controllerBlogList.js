@@ -1,8 +1,6 @@
 const blog = require("../models/modelBlogList");
 const express = require("express");
 const logger = require("../utils/logger");
-const modelUser = require("../models/modelUser");
-const jwt = require("jsonwebtoken")
 
 const blogListRouter = express.Router();
 

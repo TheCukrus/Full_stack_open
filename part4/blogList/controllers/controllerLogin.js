@@ -11,7 +11,6 @@ loginRouter.post("/", async (request, response) =>
 {
     try
     {
-
         const { username, password } = request.body
 
         const user = await modelUser.findOne({ username })

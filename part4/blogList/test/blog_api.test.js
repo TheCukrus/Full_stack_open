@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const supertest = require("supertest")
 const app = require("../app")
 const Blog = require("../models/modelBlogList")
+const modelUser = require("../models/modelUser")
 
 const api = supertest(app)
 
@@ -56,16 +57,23 @@ const initialBlogs = [
     }
 ]
 
+const loginData = {
+    username: "UsernameForTesting",
+    password: "password123"
+}
+
 beforeAll(async () =>
 {
     await Blog.deleteMany({})
     await Blog.insertMany(initialBlogs)
+    await modelUser.deleteMany({})
 })
 
 describe("Testing HTTP GET api", () =>
 {
     test('Find blogs', async () =>
     {
+        //Find blogs
         const response = await api.get('/api/blogs')
             .expect(200)
             .expect('Content-Type', /application\/json/)
@@ -98,20 +106,51 @@ describe("Testing HTTP GET api", () =>
 
 describe("Testing HTTP POST api", () =>
 {
+
+    const userData = {
+        "username": "UsernameForTesting",
+        "name": "test",
+        "password": "password123"
+    }
+
+
+    const newBlog = {
+        "title": "test",
+        "author": "creator",
+        "url": "http://127.0.0.1:4000/api/blogs",
+        "likes": 20
+    }
+
+    const blogWithNoLikes = {
+        "title": "blogWithoutAuthor",
+        "author": "creator",
+        "url": "http://127.0.0.1:4000/api/blogs",
+    }
+
+    test("create new user", async () =>
+    {
+        await api.post("/api/users")
+            .send(userData)
+            .expect(201)
+    })
+
     test('create a new blog', async () =>
     {
-        const blogsData = await api.get("/api/blogs")
-        const newBlog = {
-            "title": "test",
-            "author": "creator",
-            "url": "http://127.0.0.1:4000/api/blogs",
-            "likes": 20
-        }
 
-        await api.post('/api/blogs')
+        const login = await api
+            .post("/api/login/")
+            .send(loginData)
+            .expect(200)
+
+        const blogsData = await api.get("/api/blogs")
+
+        await api
+            .post('/api/blogs/')
             .send(newBlog)
+            .set({ "authorization": `Bearer ${login.body.token}` })
             .expect(201)
             .expect('Content-Type', /application\/json/)
+
 
         // Get the updated number of blogs 
         const response = await api.get("/api/blogs")
@@ -123,21 +162,21 @@ describe("Testing HTTP POST api", () =>
 
     test("create a new blog wihout likes value", async () =>
     {
-        newBlog = {
-            "title": "blogWithoutAuthor",
-            "author": "creator",
-            "url": "http://127.0.0.1:4000/api/blogs",
-        }
+        const login = await api
+            .post("/api/login/")
+            .send(loginData)
+            .expect(200)
 
         await api.post("/api/blogs")
-            .send(newBlog)
+            .send(blogWithNoLikes)
+            .set({ "authorization": `Bearer ${login.body.token}` })
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
-        const result = await api.get("/api/blogs")
+        const result = await api.get("/api/blogs/")
         expect(result).toBeDefined()
 
-        const findBlog = result.body.find(ele => ele.title === newBlog.title)
+        const findBlog = result.body.find(ele => ele.title === blogWithNoLikes.title)
         expect(findBlog).toBeDefined()
         expect(findBlog.likes).toBe(0)
     })
@@ -173,9 +212,21 @@ describe("Testing HTTP DELETE api", () =>
 {
     test("successfull delete blog", async () =>
     {
-        const deleteBlog = initialBlogs[2]
+        const login = await api
+            .post("/api/login/")
+            .send(loginData)
+            .expect(200)
 
-        const result = await api.delete(`/api/blogs/${deleteBlog._id}`)
+        const users = await api.get("/api/users")
+
+        // console.log(users.body)
+        // console.log(users.body[0].blogs[1].id)
+        // console.log("////////////>>>>>>>>>>???????M<mMMM")
+
+        const result = await api.
+            delete(`/api/blogs/${users.body[0].blogs[1].id}`)
+            .set({ "authorization": `Bearer ${login.body.token}` })
+
 
         expect(result.status).toBe(204)
 
