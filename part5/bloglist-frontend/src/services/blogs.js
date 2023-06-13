@@ -1,31 +1,41 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
-let token = JSON.parse(window.localStorage.token)
+let token = window.localStorage.token
 
 if (token)
 {
+  token = JSON.parse(window.localStorage.token)
   token = `Bearer ${token.token}`
 }
 
-const setToken = newToken =>
+const getAll = async () =>
 {
-  token = `Bearer ${newToken}`
-}
-
-const getAll = () =>
-{
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  try
+  {
+    const request = await axios.get(baseUrl)
+    return request.data
+  }
+  catch (err)
+  {
+    console.log(err)
+  }
 }
 
 const create = async (data) =>
 {
-  const config = {
-    headers: { "authorization": token }
+  try
+  {
+    const config = {
+      headers: { "authorization": token }
+    }
+    const response = await axios.post(baseUrl, data, config)
+    return response.data
   }
-  const response = await axios.post(baseUrl, data, config)
-  return response.data
+  catch (err)
+  {
+    console.log(err)
+  }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken }
+export default { getAll, create }

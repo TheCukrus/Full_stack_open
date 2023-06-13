@@ -4,8 +4,15 @@ const baseUrl = "/api/login";
 
 const login = async (credential) =>
 {
-    const login = await axios.post(baseUrl, credential)
-    return login.data
+    try
+    {
+        const login = await axios.post(baseUrl, credential)
+        return login.data
+    }
+    catch (err)
+    {
+        console.log(err)
+    }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

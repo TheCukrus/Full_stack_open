@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from "./services/login"
+import AllBlogs from "./components/AllBlogs"
 
 const App = () =>
 {
@@ -15,16 +15,22 @@ const App = () =>
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
 
+  const [notification, setNotification] = useState(null)
+
   const handleOnClick = async (e) =>
   {
     e.preventDefault()
     const user = await loginService.login({ username, password })
 
-    setUser(user)
-    blogService.setToken(user.token)
-    window.localStorage.setItem("token", JSON.stringify(user))
     setUsername("")
     setPassword("")
+
+    if (!user)
+    {
+      return setNotification({ "message": "Wrong username or password", "nameOfClass": "error" })
+    }
+    setUser(user)
+    window.localStorage.setItem("token", JSON.stringify(user))
   }
 
   const handleLogout = () =>
@@ -41,7 +47,8 @@ const App = () =>
 
     const newBlog = await blogService.create(data)
 
-    console.log(newBlog)
+    setNotification({ "message": `A new blog ${newBlog.title} by ${newBlog.author} added`, "nameOfClass": "success" })
+
     setTitle("")
     setAuthor("")
     setUrl("")
@@ -67,31 +74,16 @@ const App = () =>
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [blogs])
 
+  useEffect(() => { setTimeout(() => { setNotification(null) }, 5000) }, [notification])
+
   return (
     <div>
       {!user
         ?
-        <LoginForm handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
+        <LoginForm notification={notification} handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
         :
-        <div>
-          <h2>blogs</h2>
-
-          <p>{user.username} logged in <input type="submit" value="Logout" onClick={handleLogout} /></p>
-
-          <div>
-            <h1>Create new</h1>
-
-            <form onSubmit={handleBlogOnClick}>
-              Title:<input type="text" value={title} onChange={titleOnChange} /><br />
-              Author:<input type="text" value={author} onChange={authorOnChange} /><br />
-              Url:<input type="text" value={url} onChange={urlOnChange} /><br />
-              <input type="submit" value="create" />
-            </form>
-          </div>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </div>}
+        <AllBlogs notification={notification} user={user} handleBlogOnClick={handleBlogOnClick} blogs={blogs} handleLogout={handleLogout} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
+      }
     </div>
   )
 }
