@@ -10,7 +10,6 @@ const App = () =>
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [temp, setTemp] = useState(false)
 
   const handleOnClick = async (e) =>
   {
