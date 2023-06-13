@@ -10,6 +10,7 @@ const App = () =>
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
+  const [temp, setTemp] = useState(false)
 
   const handleOnClick = async (e) =>
   {
@@ -17,17 +18,32 @@ const App = () =>
     const user = await loginService.login({ username, password })
 
     setUser(user)
+    window.localStorage.setItem("token", JSON.stringify(user))
     setUsername("")
     setPassword("")
   }
+
+  const handleLogout = () =>
+  {
+    window.localStorage.clear()
+    setUser(null)
+  }
+
   const usernameOnChange = ({ target }) => setUsername(target.value)
   const passwordOnChange = ({ target }) => setPassword(target.value)
 
+  //Check if user is in localStorage
   useEffect(() =>
   {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    const localStorage = JSON.parse(window.localStorage.getItem("token"))
+
+    setUser(localStorage)
+  }, [])
+
+  //Get all blogs
+  useEffect(() =>
+  {
+    blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
 
   return (
@@ -39,7 +55,7 @@ const App = () =>
         <div>
           <h2>blogs</h2>
 
-          <p>{user.username} logged in</p>
+          <p>{user.username} logged in <input type="submit" value="Logout" onClick={handleLogout} /></p>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
