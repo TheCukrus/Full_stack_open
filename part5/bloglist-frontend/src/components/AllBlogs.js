@@ -6,6 +6,7 @@ import { useRef } from "react"
 
 const Blogs = ({ setNotification, notification, user, blogs, handleLogout }) =>
 {
+
     //useRef
     const blogFormRef = useRef()
 
@@ -22,7 +23,9 @@ const Blogs = ({ setNotification, notification, user, blogs, handleLogout }) =>
             </Togglable>
 
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
+            (
+                < Blog key={blog.id} blog={blog} />
+            )
             )}
         </div>
     )
