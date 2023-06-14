@@ -1,8 +1,9 @@
 import Notification from "./Notification"
 import NewBlogForm from "./NewBlogForm"
 import Blog from "./Blog"
+import Togglable from "./Togglable"
 
-const Blogs = ({ notification, user, handleBlogOnClick, blogs, handleLogout, title, author, url, titleOnChange, authorOnChange, urlOnChange }) =>
+const Blogs = ({ blogFormRef, notification, user, handleBlogOnClick, blogs, handleLogout, title, author, url, titleOnChange, authorOnChange, urlOnChange }) =>
 {
     return (
         <div>
@@ -12,7 +13,9 @@ const Blogs = ({ notification, user, handleBlogOnClick, blogs, handleLogout, tit
 
             <p>{user.username} logged in <input type="submit" value="Logout" onClick={handleLogout} /></p>
 
-            <NewBlogForm handleBlogOnClick={handleBlogOnClick} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
+            <Togglable buttonLabel="New blog" ref={blogFormRef}>
+                <NewBlogForm handleBlogOnClick={handleBlogOnClick} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
+            </Togglable>
 
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />

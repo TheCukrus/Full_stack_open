@@ -12,7 +12,6 @@ const NewBlogForm = ({ handleBlogOnClick, title, author, url, titleOnChange, aut
                 <input type="submit" value="create" />
             </form>
         </div>
-
     )
 }
 

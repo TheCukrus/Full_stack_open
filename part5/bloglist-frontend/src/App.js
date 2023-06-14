@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from "./services/login"
@@ -16,6 +16,8 @@ const App = () =>
   const [url, setUrl] = useState("")
 
   const [notification, setNotification] = useState(null)
+
+  const blogFormRef = useRef()
 
   const handleOnClick = async (e) =>
   {
@@ -48,7 +50,7 @@ const App = () =>
     const newBlog = await blogService.create(data)
 
     setNotification({ "message": `A new blog ${newBlog.title} by ${newBlog.author} added`, "nameOfClass": "success" })
-
+    blogFormRef.current.toggleVisibility()
     setTitle("")
     setAuthor("")
     setUrl("")
@@ -78,11 +80,12 @@ const App = () =>
 
   return (
     <div>
-      {!user
-        ?
-        <LoginForm notification={notification} handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
-        :
-        <AllBlogs notification={notification} user={user} handleBlogOnClick={handleBlogOnClick} blogs={blogs} handleLogout={handleLogout} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
+      {
+        !user
+          ?
+          <LoginForm notification={notification} handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
+          :
+          <AllBlogs blogFormRef={blogFormRef} notification={notification} user={user} handleBlogOnClick={handleBlogOnClick} blogs={blogs} handleLogout={handleLogout} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
       }
     </div>
   )
