@@ -1,6 +1,35 @@
+import { useState } from "react"
+import blogService from "../services/blogs"
 
-const NewBlogForm = ({ handleBlogOnClick, title, author, url, titleOnChange, authorOnChange, urlOnChange }) =>
+const NewBlogForm = ({ blogFormRef, setNotification }) =>
 {
+    //useState
+    const [title, setTitle] = useState("")
+    const [author, setAuthor] = useState("")
+    const [url, setUrl] = useState("")
+
+
+
+    const titleOnChange = ({ target }) => setTitle(target.value)
+    const authorOnChange = ({ target }) => setAuthor(target.value)
+    const urlOnChange = ({ target }) => setUrl(target.value)
+
+    const handleBlogOnClick = async (e) =>
+    {
+        e.preventDefault()
+
+        const data = { title, author, url }
+
+        const newBlog = await blogService.create(data)
+
+        setNotification({ "message": `A new blog ${newBlog.title} by ${newBlog.author} added`, "nameOfClass": "success" })
+        blogFormRef.current.toggleVisibility()
+        setTitle("")
+        setAuthor("")
+        setUrl("")
+    }
+
+
     return (
         <div>
             <h1>Create new</h1>

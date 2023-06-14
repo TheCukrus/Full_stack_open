@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from "./services/login"
@@ -6,18 +6,13 @@ import AllBlogs from "./components/AllBlogs"
 
 const App = () =>
 {
+  //useStates
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
-
   const [notification, setNotification] = useState(null)
-
-  const blogFormRef = useRef()
 
   const handleOnClick = async (e) =>
   {
@@ -41,27 +36,10 @@ const App = () =>
     setUser(null)
   }
 
-  const handleBlogOnClick = async (e) =>
-  {
-    e.preventDefault()
-
-    const data = { title, author, url }
-
-    const newBlog = await blogService.create(data)
-
-    setNotification({ "message": `A new blog ${newBlog.title} by ${newBlog.author} added`, "nameOfClass": "success" })
-    blogFormRef.current.toggleVisibility()
-    setTitle("")
-    setAuthor("")
-    setUrl("")
-  }
 
   const usernameOnChange = ({ target }) => setUsername(target.value)
   const passwordOnChange = ({ target }) => setPassword(target.value)
 
-  const titleOnChange = ({ target }) => setTitle(target.value)
-  const authorOnChange = ({ target }) => setAuthor(target.value)
-  const urlOnChange = ({ target }) => setUrl(target.value)
 
   //Check if user is in localStorage
   useEffect(() =>
@@ -85,7 +63,7 @@ const App = () =>
           ?
           <LoginForm notification={notification} handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
           :
-          <AllBlogs blogFormRef={blogFormRef} notification={notification} user={user} handleBlogOnClick={handleBlogOnClick} blogs={blogs} handleLogout={handleLogout} title={title} author={author} url={url} titleOnChange={titleOnChange} authorOnChange={authorOnChange} urlOnChange={urlOnChange} />
+          <AllBlogs setNotification={setNotification} notification={notification} user={user} blogs={blogs} handleLogout={handleLogout} />
       }
     </div>
   )
