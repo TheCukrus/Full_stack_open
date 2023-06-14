@@ -15,7 +15,7 @@ const Blog = ({ blog }) =>
         :
         <div>
           {blog.title} {blog.author} <button onClick={() => setShow(false)}>Hide</button><br />
-          {blog.url} <br />
+          <a href={blog.url}>{blog.url}</a> <br />
           Likes {blog.likes} <button>Like</button><br />
           {blog.user.username}
         </div>}
