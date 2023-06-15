@@ -24,7 +24,7 @@ const Blogs = ({ setNotification, notification, user, blogs, handleLogout }) =>
 
             {blogs.map(blog =>
             (
-                < Blog key={blog.id} blog={blog} />
+                < Blog setNotification={setNotification} key={blog.id} blog={blog} />
             )
             )}
         </div>

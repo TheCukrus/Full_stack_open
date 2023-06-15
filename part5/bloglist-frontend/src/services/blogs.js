@@ -37,5 +37,22 @@ const create = async (data) =>
     console.log(err)
   }
 }
+
+const updateLikes = async (data, id) =>
+{
+  try
+  {
+    const config = {
+      headers: { "authorization": token }
+    }
+
+    const response = await axios.put(`${baseUrl}/${id}`, data, config)
+    return response.data;
+  }
+  catch (err)
+  {
+    console.log(err)
+  }
+}
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create }
+export default { getAll, create, updateLikes }
