@@ -6,7 +6,6 @@ import { useRef } from "react"
 
 const Blogs = ({ setBlogs, setNotification, notification, user, blogs, handleLogout }) =>
 {
-
     //useRef
     const blogFormRef = useRef()
 
