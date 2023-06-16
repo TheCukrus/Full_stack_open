@@ -4,7 +4,7 @@ import Blog from "./Blog"
 import Togglable from "./Togglable"
 import { useRef } from "react"
 
-const Blogs = ({ setNotification, notification, user, blogs, handleLogout }) =>
+const Blogs = ({ setBlogs, setNotification, notification, user, blogs, handleLogout }) =>
 {
 
     //useRef
@@ -19,13 +19,13 @@ const Blogs = ({ setNotification, notification, user, blogs, handleLogout }) =>
             <p>{user.username} logged in <input type="submit" value="Logout" onClick={handleLogout} /></p>
 
             <Togglable buttonLabel="New blog" ref={blogFormRef}>
-                <NewBlogForm blogFormRef={blogFormRef} setNotification={setNotification} />
+                <NewBlogForm setBlogs={setBlogs} blogFormRef={blogFormRef} setNotification={setNotification} />
             </Togglable>
 
             {
                 blogs
                     .sort((a, b) => a.likes - b.likes)
-                    .map(blog => (< Blog setNotification={setNotification} key={blog.id} blog={blog} />))
+                    .map(blog => (< Blog setBlogs={setBlogs} setNotification={setNotification} key={blog.id} blog={blog} />))
             }
         </div>
     )

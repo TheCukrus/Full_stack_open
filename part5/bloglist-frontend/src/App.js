@@ -52,7 +52,7 @@ const App = () =>
   useEffect(() =>
   {
     blogService.getAll().then(blogs => setBlogs(blogs))
-  }, [blogs])
+  }, [])
 
   useEffect(() => { setTimeout(() => { setNotification(null) }, 5000) }, [notification])
 
@@ -63,7 +63,7 @@ const App = () =>
           ?
           <LoginForm notification={notification} handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
           :
-          <AllBlogs setNotification={setNotification} notification={notification} user={user} blogs={blogs} handleLogout={handleLogout} />
+          <AllBlogs setBlogs={setBlogs} setNotification={setNotification} notification={notification} user={user} blogs={blogs} handleLogout={handleLogout} />
       }
     </div>
   )

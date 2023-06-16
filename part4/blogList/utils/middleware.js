@@ -61,7 +61,7 @@ const userExtractor = async (request, response, next) =>
 {
   try
   {
-    const user = await modelUser.findById(request.token.id)
+    const user = await modelUser.findById(request.token?.id)
     request.user = user
   }
   catch (err)

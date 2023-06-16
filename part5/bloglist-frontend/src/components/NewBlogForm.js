@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from "../services/blogs"
 
-const NewBlogForm = ({ blogFormRef, setNotification }) =>
+const NewBlogForm = ({ setBlogs, blogFormRef, setNotification }) =>
 {
     //useState
     const [title, setTitle] = useState("")
@@ -27,6 +27,8 @@ const NewBlogForm = ({ blogFormRef, setNotification }) =>
         setTitle("")
         setAuthor("")
         setUrl("")
+        const fetchData = await blogService.getAll()
+        await setBlogs(fetchData)
     }
 
 

@@ -1,8 +1,8 @@
 import "./Blog.css"
 import { useState } from "react"
-import blogs from "../services/blogs"
+import blogService from "../services/blogs"
 
-const Blog = ({ blog, setNotification }) => 
+const Blog = ({ setBlogs, blog, setNotification }) => 
 {
   const [show, setShow] = useState(false)
 
@@ -10,8 +10,9 @@ const Blog = ({ blog, setNotification }) =>
   {
     try
     {
-      const result = await blogs.updateLikes({ "likes": blog.likes + 1 }, blog.id)
-      console.log(result)
+      await blogService.updateLikes({ "likes": blog.likes + 1 }, blog.id)
+      const fetchData = await blogService.getAll()
+      await setBlogs(fetchData)
     }
     catch (err)
     {
