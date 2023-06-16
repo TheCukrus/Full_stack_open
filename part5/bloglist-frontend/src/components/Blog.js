@@ -20,6 +20,23 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
     }
   }
 
+  const removeBlog = async () =>
+  {
+    try
+    {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
+      {
+        await blogService.remove(blog.id)
+        const fetchData = await blogService.getAll()
+        await setBlogs(fetchData)
+        await setNotification({ "message": `Removed blog: ${blog.title}`, "nameOfClass": "success" })
+      }
+    }
+    catch (err)
+    {
+      console.log(err)
+    }
+  }
 
   return (
     <div className="blog">
@@ -33,7 +50,8 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
           {blog.title} {blog.author} <button onClick={() => setShow(false)}>Hide</button><br />
           <a href={blog.url}>{blog.url}</a> <br />
           Likes {blog.likes} <button onClick={increaseLikeCount}>Like</button><br />
-          {blog.user.username}
+          {blog.user.username}<br />
+          <button className="removeButton" onClick={removeBlog}>Remove</button>
         </div>}
     </div>
   )

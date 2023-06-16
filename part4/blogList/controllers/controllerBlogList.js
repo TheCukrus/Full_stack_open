@@ -40,6 +40,12 @@ blogListRouter.post("/", async (request, response) =>
 {
     try
     {
+
+        if (!request.token.id)
+        {
+            return response.status(401).json({ message: "Token invalid" })
+        }
+
         if (!request.body.title || !request.body.url)
         {
             return response.status(400).json({ message: logger.error("Input missing") })
