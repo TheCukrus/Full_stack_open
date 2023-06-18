@@ -1,6 +1,6 @@
 import "./Blog.css"
 import { useState } from "react"
-import blogService from "../services/blogs"
+import blogService from "../services/blogs.js"
 
 const Blog = ({ setBlogs, blog, setNotification }) =>
 {

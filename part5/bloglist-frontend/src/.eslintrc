@@ -17,8 +17,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-        "jest"
+        "react"
     ],
     "rules": {
         "quotes": [

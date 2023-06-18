@@ -1,5 +1,5 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from "axios"
+const baseUrl = "/api/blogs"
 
 let token = window.localStorage.token
 
@@ -47,7 +47,7 @@ const updateLikes = async (data, id) =>
     }
 
     const response = await axios.put(`${baseUrl}/${id}`, data, config)
-    return response.data;
+    return response.data
   }
   catch (err)
   {

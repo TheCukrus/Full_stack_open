@@ -1,7 +1,7 @@
-import Notification from "./Notification"
-import NewBlogForm from "./NewBlogForm"
-import Blog from "./Blog"
-import Togglable from "./Togglable"
+import Notification from "./Notification.js"
+import NewBlogForm from "./NewBlogForm.js"
+import Blog from "./Blog.js"
+import Togglable from "./Togglable.js"
 import { useRef } from "react"
 
 const Blogs = ({ setBlogs, setNotification, notification, user, blogs, handleLogout }) =>
