@@ -38,16 +38,18 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
     }
   }
 
+  const toggleInfo = () => setShow((prev) => !prev)
+
   return (
     <div className="blog">
       {!show
         ?
         <div>
-          {blog.title} {blog.author} <button onClick={() => setShow(blog.id)}>View</button>
+          {blog.title} {blog.author} <button onClick={toggleInfo}>View</button>
         </div>
         :
         <div>
-          {blog.title} {blog.author} <button onClick={() => setShow(false)}>Hide</button><br />
+          {blog.title} {blog.author} <button onClick={toggleInfo}>Hide</button><br />
           <a href={blog.url}>{blog.url}</a> <br />
           Likes {blog.likes} <button onClick={increaseLikeCount}>Like</button><br />
           {blog.user.username}<br />
