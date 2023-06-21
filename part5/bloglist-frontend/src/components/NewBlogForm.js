@@ -37,9 +37,9 @@ const NewBlogForm = ({ setBlogs, blogFormRef, setNotification }) =>
             <h1>Create new</h1>
 
             <form onSubmit={handleBlogOnClick}>
-                Title:<input type="text" value={title} onChange={titleOnChange} /><br />
-                Author:<input type="text" value={author} onChange={authorOnChange} /><br />
-                Url:<input type="text" value={url} onChange={urlOnChange} /><br />
+                Title:<input type="text" id="title-input" placeholder="write your title" value={title} onChange={titleOnChange} /><br />
+                Author:<input type="text" id="author-input" placeholder="write your author" value={author} onChange={authorOnChange} /><br />
+                Url:<input type="text" id="url-input" placeholder="blog url" value={url} onChange={urlOnChange} /><br />
                 <input type="submit" value="create" />
             </form>
         </div>
