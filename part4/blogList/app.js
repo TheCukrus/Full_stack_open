@@ -19,9 +19,9 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
-app.use("/api/blogs", middleware.userExtractor, controllerBlogList)
+app.use("/api/blogs", middleware.tokenExtractor, middleware.userExtractor, controllerBlogList)
 app.use("/api/users", controllerUser)
-app.use("/api/login", controllerLogin)
+app.use("/api/login", middleware.tokenExtractor, controllerLogin)
 
 if (process.env.NODE_ENV === "test")
 {

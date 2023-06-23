@@ -70,6 +70,3 @@ const App = () =>
 }
 
 export default App
-
-//UsernameForTesting
-//password123

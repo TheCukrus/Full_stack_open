@@ -1,12 +1,10 @@
 import axios from "axios"
 const baseUrl = "/api/blogs"
 
-let token = window.localStorage.token
-
-if (token)
+const getToken = () =>
 {
-  token = JSON.parse(window.localStorage.token)
-  token = `Bearer ${token.token}`
+  const tokenFromStorage = window.localStorage.getItem("token")
+  return tokenFromStorage ? `Bearer ${JSON.parse(tokenFromStorage).token}` : null
 }
 
 const getAll = async () =>
@@ -27,7 +25,7 @@ const create = async (data) =>
   try
   {
     const config = {
-      headers: { "authorization": token }
+      headers: { "authorization": getToken() }
     }
     const response = await axios.post(baseUrl, data, config)
     return response.data
@@ -43,7 +41,7 @@ const updateLikes = async (data, id) =>
   try
   {
     const config = {
-      headers: { "authorization": token }
+      headers: { "authorization": getToken() }
     }
 
     const response = await axios.put(`${baseUrl}/${id}`, data, config)
@@ -60,7 +58,7 @@ const remove = async (id) =>
   try
   {
     const config = {
-      headers: { "authorization": token }
+      headers: { "authorization": getToken() }
     }
 
     const response = await axios.delete(`${baseUrl}/${id}`, config)
