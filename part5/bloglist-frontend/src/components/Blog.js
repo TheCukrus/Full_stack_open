@@ -53,7 +53,7 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
           <a href={blog.url}>{blog.url}</a> <br />
           Likes {blog.likes} <button id="like" onClick={increaseLikeCount}>Like</button><br />
           {blog.user.username}<br />
-          <button className="removeButton" onClick={removeBlog}>Remove</button>
+          <button id="remove" className="removeButton" onClick={removeBlog}>Remove</button>
         </div>}
     </div>
   )

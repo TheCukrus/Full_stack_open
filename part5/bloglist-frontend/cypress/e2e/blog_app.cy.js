@@ -81,6 +81,24 @@ describe("Blog app", function ()
 
       cy.contains("Likes 1")
     })
+
+    it("deleting post", function ()
+    {
+      cy.get("#show").click()
+
+      cy.get("#title-input").type("Testing blog")
+      cy.get("#author-input").type("Jevgenij")
+      cy.get("#url-input").type("http://testtesttest.test")
+      cy.get("#create-button").click()
+
+      cy.get("#view").click()
+      cy.get("#remove").click()
+
+      cy.get(".success").should("contain", "Removed blog: Testing blog")
+      cy.get(".success").should("have.css", "border-style", "solid")
+
+    })
+
   })
 
 })
