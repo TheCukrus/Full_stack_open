@@ -64,6 +64,7 @@ describe("Blog app", function ()
 
       cy.get(".success").should("contain", "A new blog Testing blog by Jevgenij added")
       cy.get(".success").should("have.css", "border-style", "solid")
+      cy.contains("Testing blog Jevgenij")
     })
   })
 
