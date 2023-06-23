@@ -10,9 +10,9 @@ const LoginForm = ({ notification, handleOnClick, username, password, usernameOn
             <Notification notification={notification} />
 
             <form onSubmit={handleOnClick} name="login form">
-                Username<input type="text" value={username} onChange={usernameOnChange} /><br />
-                Password<input type="password" value={password} onChange={passwordOnChange} /><br />
-                <input type="submit" />
+                Username<input id="username" type="text" value={username} onChange={usernameOnChange} /><br />
+                Password<input id="password" type="password" value={password} onChange={passwordOnChange} /><br />
+                <input id="login-button" type="submit" />
             </form>
         </div>
     )

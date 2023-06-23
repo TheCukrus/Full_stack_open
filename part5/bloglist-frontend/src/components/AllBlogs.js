@@ -15,7 +15,7 @@ const Blogs = ({ setBlogs, setNotification, notification, user, blogs, handleLog
 
             <Notification notification={notification} />
 
-            <p>{user.username} logged in <input type="submit" value="Logout" onClick={handleLogout} /></p>
+            <p>{user.username} logged in <input id="logout-button" type="submit" value="Logout" onClick={handleLogout} /></p>
 
             <Togglable buttonLabel="New blog" ref={blogFormRef}>
                 <NewBlogForm setBlogs={setBlogs} blogFormRef={blogFormRef} setNotification={setNotification} />
