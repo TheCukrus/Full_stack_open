@@ -45,13 +45,13 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
       {!show
         ?
         <div>
-          {blog.title} {blog.author} <button onClick={toggleInfo}>View</button>
+          {blog.title} {blog.author} <button id="view" onClick={toggleInfo}>View</button>
         </div>
         :
         <div>
           {blog.title} {blog.author} <button onClick={toggleInfo}>Hide</button><br />
           <a href={blog.url}>{blog.url}</a> <br />
-          Likes {blog.likes} <button onClick={increaseLikeCount}>Like</button><br />
+          Likes {blog.likes} <button id="like" onClick={increaseLikeCount}>Like</button><br />
           {blog.user.username}<br />
           <button className="removeButton" onClick={removeBlog}>Remove</button>
         </div>}

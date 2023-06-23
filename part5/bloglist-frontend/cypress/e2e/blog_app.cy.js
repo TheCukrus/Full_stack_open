@@ -66,6 +66,21 @@ describe("Blog app", function ()
       cy.get(".success").should("have.css", "border-style", "solid")
       cy.contains("Testing blog Jevgenij")
     })
+
+    it("user can like a blog", function ()
+    {
+      cy.get("#show").click()
+
+      cy.get("#title-input").type("Testing blog")
+      cy.get("#author-input").type("Jevgenij")
+      cy.get("#url-input").type("http://testtesttest.test")
+      cy.get("#create-button").click()
+
+      cy.get("#view").click()
+      cy.get("#like").click()
+
+      cy.contains("Likes 1")
+    })
   })
 
 })
