@@ -142,4 +142,48 @@ describe("Blog app", function ()
     })
   })
 
+  describe("order blogs by like", function ()
+  {
+    beforeEach(function ()
+    {
+      cy.get("#username").type("Jevgenij")
+      cy.get("#password").type("password123")
+      cy.get("#login-button").click()
+
+      cy.get("#show").click()
+
+      cy.get("#title-input").type("Testing blog")
+      cy.get("#author-input").type("Jevgenij")
+      cy.get("#url-input").type("http://testtesttest.test")
+      cy.get("#create-button").click()
+
+      cy.get("#view").click()
+      cy.get("#like").click()
+
+
+      cy.get("#logout-button").click()
+    })
+
+    it("check if like count sorting blogs", function ()
+    {
+      cy.get("#username").type("Jevgenij")
+      cy.get("#password").type("password123")
+      cy.get("#login-button").click()
+
+      cy.get("#show").click()
+
+      cy.get("#title-input").type("Blog with the most likes")
+      cy.get("#author-input").type("Jevgenij")
+      cy.get("#url-input").type("http://testtesttest.test")
+      cy.get("#create-button").click()
+
+      cy.contains("Testing blog Jevgenij").parent().find("#view").click()
+
+      cy.contains("Blog with the most likes Jevgenij").find("#view").click()
+
+      cy.get('.blog').eq(0).contains("Blog with the most likes Jevgenij")
+      cy.get('.blog').eq(1).contains("Testing blog Jevgenij")
+    })
+  })
+
 })
