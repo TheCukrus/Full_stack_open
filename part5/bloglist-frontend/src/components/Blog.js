@@ -2,7 +2,7 @@ import "./Blog.css"
 import { useState } from "react"
 import blogService from "../services/blogs.js"
 
-const Blog = ({ setBlogs, blog, setNotification }) =>
+const Blog = ({ user, setBlogs, blog, setNotification }) =>
 {
   const [show, setShow] = useState(false)
 
@@ -53,7 +53,12 @@ const Blog = ({ setBlogs, blog, setNotification }) =>
           <a href={blog.url}>{blog.url}</a> <br />
           Likes {blog.likes} <button id="like" onClick={increaseLikeCount}>Like</button><br />
           {blog.user.username}<br />
-          <button id="remove" className="removeButton" onClick={removeBlog}>Remove</button>
+          {user.username === blog.user.name
+            ?
+            <button id="remove" className="removeButton" onClick={removeBlog}>Remove</button>
+            :
+            null
+          }
         </div>}
     </div>
   )

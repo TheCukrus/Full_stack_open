@@ -11,7 +11,16 @@ describe("Blog app", function ()
       password: "password123",
       name: "Jevgenij"
     }
+
+    const user2 =
+    {
+      username: "Milda",
+      password: "password123",
+      name: "Milda"
+    }
+
     cy.request("POST", "http://localhost:3003/api/users", user)
+    cy.request("POST", "http://localhost:3003/api/users", user2)
     cy.visit("http://localhost:3000")
   })
 
@@ -96,9 +105,41 @@ describe("Blog app", function ()
 
       cy.get(".success").should("contain", "Removed blog: Testing blog")
       cy.get(".success").should("have.css", "border-style", "solid")
+    })
+  })
 
+  describe("check for deleting", function ()
+  {
+    beforeEach(function ()
+    {
+      cy.get("#username").type("Jevgenij")
+      cy.get("#password").type("password123")
+      cy.get("#login-button").click()
+
+      cy.get("#show").click()
+
+      cy.get("#title-input").type("Testing blog")
+      cy.get("#author-input").type("Jevgenij")
+      cy.get("#url-input").type("http://testtesttest.test")
+      cy.get("#create-button").click()
+
+      cy.get("#view").click()
+      cy.get("#like").click()
+
+
+      cy.get("#logout-button").click()
     })
 
+    it("author only can see blog's delete button", function ()
+    {
+      cy.get("#username").type("Milda")
+      cy.get("#password").type("password123")
+      cy.get("#login-button").click()
+
+      cy.get("#view").click()
+
+      cy.get('#remove').should('not.exist')
+    })
   })
 
 })
