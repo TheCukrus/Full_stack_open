@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import deepFreeze from 'deep-freeze'
 import counterReducer from './reducer'
 
