@@ -11,6 +11,7 @@ const AnecdoteForm = () =>
         const content = e.target.anecdote.value
         e.target.anecdote.value = ""
         dispatch({ type: "anecdotes/setAdd", payload: content })
+        dispatch({ type: "notification/setNotification", payload: "New anecdote added" })
     }
 
 

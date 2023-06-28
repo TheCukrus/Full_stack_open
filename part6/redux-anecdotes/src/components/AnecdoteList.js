@@ -10,9 +10,10 @@ const AnecdoteList = () =>
 
     const dispatch = useDispatch()
 
-    const votes = (id) =>
+    const votes = (content) =>
     {
-        dispatch({ type: "anecdotes/setVote", payload: id })
+        dispatch({ type: "anecdotes/setVote", payload: content.id })
+        dispatch({ type: "notification/setNotification", payload: `You voted ${content.content}` })
     }
 
     const filteredAnecdotes = anecdotes.filter((ele) =>
@@ -35,7 +36,7 @@ const AnecdoteList = () =>
                         </div>
                         <div>
                             has {anecdote.votes}
-                            <button onClick={() => votes(anecdote.id)}>vote</button>
+                            <button onClick={() => votes(anecdote)}>vote</button>
                         </div>
                     </div>
                 )}
