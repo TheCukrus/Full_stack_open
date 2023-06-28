@@ -10,13 +10,13 @@ const filterSlice = createSlice({
     name: "filter",
     initialState,
     reducers: {
-        // setFilter(state, action)
-        // {
-        //     console.log("ACTION: ", action)
-        //     console.log("STATE: ", state)
+        setFilter(state, action)
+        {
+            console.log("ACTION: ", action)
+            console.log("STATE: ", state)
 
-        //     state.filter = action.payload
-        // },
+            state.filter = action.payload
+        },
         setText(state, action)
         {
             console.log("ACTION: ", action)
