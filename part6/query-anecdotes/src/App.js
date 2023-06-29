@@ -12,7 +12,10 @@ const App = () =>
     console.log('vote')
   }
 
-  const result = useQuery("anecdotes", getAll,)
+  const result = useQuery("anecdotes", getAll,
+    {
+      retry: false
+    })
 
   console.log(result)
 
