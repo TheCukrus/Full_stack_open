@@ -7,6 +7,7 @@ import CreateNew from "./components/CreateNew.js"
 import Footer from "./components/Footer"
 import Menu from "./components/Meniu.js"
 import SingleAnecdote from "./components/SingleAnecdote.js"
+import Notification from "./components/Notification.js"
 
 const App = () =>
 {
@@ -59,9 +60,10 @@ const App = () =>
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} setNotification={setNotification} />
 
       <Routes>
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route path="/create" element={<CreateNew setNotification={setNotification} addNew={addNew} />} />
         <Route path="/about" element={<About />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/anecdote/:id" element={<SingleAnecdote anecdote={anecdote} />} />
