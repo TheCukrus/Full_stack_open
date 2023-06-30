@@ -30,7 +30,7 @@ const App = () =>
       retry: false
     })
 
-  console.log(result)
+  // console.log(result)
 
 
   if (result.isLoading)

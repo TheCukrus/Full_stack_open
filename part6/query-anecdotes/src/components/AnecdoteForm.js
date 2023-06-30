@@ -10,9 +10,15 @@ const AnecdoteForm = () =>
   const [notification, notificationDispatch] = useContext(NotificationContext)
 
   const newAnecdoteMutation = useMutation(create, {
-    onSuccess: () =>
+    onSuccess: (data) =>
     {
       queryClient.invalidateQueries("anecdotes")
+      console.log(data)
+      notificationDispatch({ type: "ADD", payload: data.content })
+    },
+    onError: (error) =>
+    {
+      notificationDispatch({ type: "ADD", payload: error.message })
     }
   })
 
@@ -22,8 +28,9 @@ const AnecdoteForm = () =>
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content, votes: 0 })
-    notificationDispatch({ type: "ADD", payload: content })
   }
+
+  // console.log(newAnecdoteMutation)
 
   return (
     <div>
