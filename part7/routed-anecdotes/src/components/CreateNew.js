@@ -13,6 +13,9 @@ const CreateNew = (props) =>
         info.reset()
     }
 
+    const { reset: contentReset, ...contentProps } = content;
+    const { reset: authorReset, ...authorProps } = author;
+    const { reset: infoReset, ...infoProps } = info
     const navigate = useNavigate()
 
     const handleSubmit = (e) =>
@@ -33,15 +36,15 @@ const CreateNew = (props) =>
             <form onSubmit={handleSubmit}>
                 <div>
                     content
-                    <input name='content' {...content} />
+                    <input name='content' {...contentProps} />
                 </div>
                 <div>
                     author
-                    <input name='author' {...author} />
+                    <input name='author' {...authorProps} />
                 </div>
                 <div>
                     url for more info
-                    <input name='info' {...info} />
+                    <input name='info' {...infoProps} />
                 </div>
                 <button type="submit">create</button>
                 <button type="button" onClick={handleReset}>reset</button>
