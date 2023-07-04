@@ -1,0 +1,10 @@
+.blog {
+    padding-top: 10px;
+    padding-left: 2px;
+    border: solid 1px;
+    margin-bottom: 5px;
+}
+
+.removeButton {
+    background-color: rgba(67, 12, 218, 0.486);
+}
