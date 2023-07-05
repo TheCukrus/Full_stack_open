@@ -36,7 +36,7 @@ const create = async (data) =>
   }
 }
 
-const updateLikes = async (data, id) =>
+const updateLikes = async (data) =>
 {
   try
   {
@@ -44,7 +44,7 @@ const updateLikes = async (data, id) =>
       headers: { "authorization": getToken() }
     }
 
-    const response = await axios.put(`${baseUrl}/${id}`, data, config)
+    const response = await axios.put(`${baseUrl}/${data.id}`, { "likes": data.likes + 1 }, config)
     return response.data
   }
   catch (err)

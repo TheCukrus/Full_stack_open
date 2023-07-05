@@ -2,43 +2,43 @@ import "./Blog.css"
 import { useState, useContext } from "react"
 import blogService from "../services/blogs.js"
 import NotificationContext from "./NotificationContext.js"
+import { useQueryClient, useMutation } from "react-query"
 
-const Blog = ({ user, setBlogs, blog }) =>
+const Blog = ({ user, blog }) =>
 {
+  const queryClient = useQueryClient()
+
   // eslint-disable-next-line no-unused-vars
   const [notification, notificationDispatch] = useContext(NotificationContext)
 
   const [show, setShow] = useState(false)
 
-  const increaseLikeCount = async () =>
+  const newVoteMutation = useMutation(blogService.updateLikes, {
+    onSuccess: () =>
+    {
+      queryClient.invalidateQueries("blogs")
+    }
+  })
+
+  const newRemoveMutation = useMutation(blogService.remove, {
+    onSuccess: () =>
+    {
+      queryClient.invalidateQueries("blogs")
+    }
+  })
+
+  const increaseLikeCount = () =>
   {
-    try
-    {
-      await blogService.updateLikes({ "likes": blog.likes + 1 }, blog.id)
-      const fetchData = await blogService.getAll()
-      await setBlogs(fetchData)
-    }
-    catch (err)
-    {
-      notificationDispatch({ type: "NOTIFICATION", payload: { message: "Can't update like count", nameOfClass: "error" } })
-    }
+    newVoteMutation.mutate(blog)
+    notificationDispatch({ type: "NOTIFICATION", payload: { message: `Voted for ${blog.title}`, nameOfClass: "success" } })
   }
 
-  const removeBlog = async () =>
+  const removeBlog = () =>
   {
-    try
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
     {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
-      {
-        await blogService.remove(blog.id)
-        const fetchData = await blogService.getAll()
-        await setBlogs(fetchData)
-        await notificationDispatch({ type: "NOTIFICATION", payload: { message: `Removed blog: ${blog.title}`, nameOfClass: "success" } })
-      }
-    }
-    catch (err)
-    {
-      console.log(err)
+      newRemoveMutation.mutate(blog.id)
+      notificationDispatch({ type: "NOTIFICATION", payload: { message: `Removed blog: ${blog.title}`, nameOfClass: "success" } })
     }
   }
 
