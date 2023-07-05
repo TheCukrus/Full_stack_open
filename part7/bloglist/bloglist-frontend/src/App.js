@@ -5,11 +5,12 @@ import loginService from "./services/login.js"
 import AllBlogs from "./components/AllBlogs.js"
 import NotificationContext from "./components/NotificationContext.js"
 
+// eslint-disable-next-line no-unused-vars
+import { useQuery } from "react-query"
+
 const App = () =>
 {
-
-  // //useStates
-  const [blogs, setBlogs] = useState([])
+  //useStates
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
@@ -40,10 +41,8 @@ const App = () =>
     setUser(null)
   }
 
-
   const usernameOnChange = ({ target }) => setUsername(target.value)
   const passwordOnChange = ({ target }) => setPassword(target.value)
-
 
   //Check if user is in localStorage
   useEffect(() =>
@@ -52,12 +51,31 @@ const App = () =>
     setUser(localStorage)
   }, [])
 
-  //Get all blogs
-  useEffect(() =>
-  {
-    blogService.getAll().then(blogs => setBlogs(blogs))
-  }, [])
+  const fetchingAllBlogs = useQuery("blogs", blogService.getAll,
+    {
+      retry: false
+    })
 
+  if (fetchingAllBlogs.isLoading)
+  {
+    return (
+      <div>
+        Loading blogs...
+      </div>
+    )
+  }
+
+  if (fetchingAllBlogs.isError)
+  {
+    return (
+      <div>
+        Blogs service not available due to problems in server
+      </div>
+    )
+  }
+
+  const blogs = fetchingAllBlogs.data
+  console.log(fetchingAllBlogs.data)
 
   return (
     <div>
@@ -66,7 +84,7 @@ const App = () =>
           ?
           <LoginForm handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
           :
-          <AllBlogs setBlogs={setBlogs} user={user} blogs={blogs} handleLogout={handleLogout} />
+          <AllBlogs user={user} blogs={blogs} handleLogout={handleLogout} />
       }
     </div>
   )

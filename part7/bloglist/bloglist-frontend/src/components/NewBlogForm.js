@@ -1,9 +1,12 @@
 import { useState, useContext } from "react"
 import blogService from "../services/blogs.js"
 import NotificationContext from "./NotificationContext.js"
+import { useMutation, useQueryClient } from "react-query"
 
-const NewBlogForm = ({ setBlogs, blogFormRef }) =>
+const NewBlogForm = ({ blogFormRef }) =>
 {
+    const queryClient = useQueryClient()
+
     // eslint-disable-next-line no-unused-vars
     const [notification, notificationDispatch] = useContext(NotificationContext)
 
@@ -12,11 +15,18 @@ const NewBlogForm = ({ setBlogs, blogFormRef }) =>
     const [author, setAuthor] = useState("")
     const [url, setUrl] = useState("")
 
-
-
+    //onChange functions
     const titleOnChange = ({ target }) => setTitle(target.value)
     const authorOnChange = ({ target }) => setAuthor(target.value)
     const urlOnChange = ({ target }) => setUrl(target.value)
+
+    const newBlogMutation = useMutation(blogService.create,
+        {
+            onSuccess: () =>
+            {
+                queryClient.invalidateQueries("blogs")
+            }
+        })
 
     const handleBlogOnClick = async (e) =>
     {
@@ -24,18 +34,15 @@ const NewBlogForm = ({ setBlogs, blogFormRef }) =>
 
         const data = { title, author, url }
 
-        const newBlog = await blogService.create(data)
+        newBlogMutation.mutate(data)
 
-        notificationDispatch({ type: "NOTIFICATION", payload: { message: `A new blog ${newBlog.title} by ${newBlog.author} added`, nameOfClass: "success" } })
+        notificationDispatch({ type: "NOTIFICATION", payload: { message: `A new blog ${data.title} by ${data.author} added`, nameOfClass: "success" } })
 
         blogFormRef.current.toggleVisibility()
         setTitle("")
         setAuthor("")
         setUrl("")
-        const fetchData = await blogService.getAll()
-        await setBlogs(fetchData)
     }
-
 
     return (
         <div>

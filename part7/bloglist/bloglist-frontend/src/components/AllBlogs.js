@@ -9,6 +9,7 @@ const Blogs = ({ setBlogs, user, blogs, handleLogout }) =>
     //useRef
     const blogFormRef = useRef()
 
+    console.log(blogs)
     return (
         <div>
             <h2>blogs</h2>
@@ -18,7 +19,7 @@ const Blogs = ({ setBlogs, user, blogs, handleLogout }) =>
             <p>{user.username} logged in <input id="logout-button" type="submit" value="Logout" onClick={handleLogout} /></p>
 
             <Togglable buttonLabel="New blog" ref={blogFormRef}>
-                <NewBlogForm setBlogs={setBlogs} blogFormRef={blogFormRef} />
+                <NewBlogForm blogFormRef={blogFormRef} />
             </Togglable>
 
             {
