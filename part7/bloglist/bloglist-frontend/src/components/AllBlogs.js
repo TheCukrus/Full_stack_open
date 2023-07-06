@@ -1,24 +1,16 @@
 import Notification from "./Notification.js"
-import { useContext, useState, useEffect } from "react"
-import UserContext from "./UserContext.js"
+import { useState, useEffect } from "react"
 import { Routes, Route, useMatch } from "react-router-dom"
 import Home from "./Home.js"
 import Users from "./Users.js"
 import SingleUser from "./SingleUser.js"
 import userService from "../services/users.js"
 import SingleBlog from "./SingleBlog.js"
+import Navigation from "./Navigation.js"
 
 const Blogs = ({ blogs }) =>
 {
-    const [user, userDispatch] = useContext(UserContext)
-
     const [users, setUsers] = useState([])
-
-    const handleLogout = () =>
-    {
-        window.localStorage.clear()
-        userDispatch({ type: "LOGOUT" })
-    }
 
     const matchUser = useMatch("/users/:id")
     const matchingUser = matchUser
@@ -43,12 +35,8 @@ const Blogs = ({ blogs }) =>
 
     return (
         <div>
-            <h2>blogs</h2>
-
+            <Navigation />
             <Notification />
-
-            <p>{user.username} logged in </p>
-            <input id="logout-button" type="submit" value="Logout" onClick={handleLogout} />
 
             <Routes>
                 <Route path="/" element={<Home blogs={blogs} />} />

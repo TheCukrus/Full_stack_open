@@ -46,6 +46,8 @@ const SingleBlog = ({ blog }) =>
 
     return (
         <div>
+            <h2>blog app</h2>
+
             <h1>{blog.title} {blog.author}</h1>
             <a href={blog.url}>{blog.url}</a> <br />
             Likes {blog.likes} <button id="like" onClick={increaseLikeCount}>Like</button><br />
