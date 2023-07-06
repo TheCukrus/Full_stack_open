@@ -36,6 +36,22 @@ const create = async (data) =>
   }
 }
 
+const addComment = async (id, comment) =>
+{
+  try
+  {
+    const config = {
+      headers: { "authorization": getToken() }
+    }
+    const response = await axios.post(`${baseUrl}/${id}/comments`, comment, config)
+    return response.data
+  }
+  catch (err)
+  {
+    console.log(err)
+  }
+}
+
 const updateLikes = async (data) =>
 {
   try
@@ -70,4 +86,4 @@ const remove = async (id) =>
   }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, updateLikes, remove }
+export default { getAll, create, updateLikes, remove, addComment }

@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { useQueryClient, useMutation } from "react-query"
 
 import UserContext from "./UserContext.js"
@@ -8,6 +8,18 @@ import blogService from "../services/blogs.js"
 const SingleBlog = ({ blog }) =>
 {
     const queryClient = useQueryClient()
+
+    const [comment, setComment] = useState("")
+
+    const commentOnChange = e => setComment(e.target.value)
+
+    const commentOnSubmit = async (e) =>
+    {
+        e.preventDefault()
+
+        await blogService.addComment(blog.id, { comment: comment })
+        setComment("")
+    }
 
     // eslint-disable-next-line no-unused-vars
     const [user, userDispatch] = useContext(UserContext)
@@ -61,6 +73,12 @@ const SingleBlog = ({ blog }) =>
             }
 
             <h4>Comments</h4>
+
+            <form onSubmit={commentOnSubmit}>
+                <input type="text" value={comment} onChange={commentOnChange} />
+                <input type="submit" value="Add comment" />
+            </form>
+
             <ul>
                 {blog.comments.map((ele) => <li key={ele}>{ele}</li>)}
             </ul>
