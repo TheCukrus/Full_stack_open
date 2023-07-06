@@ -36,12 +36,6 @@ const App = () =>
     window.localStorage.setItem("token", JSON.stringify(user))
   }
 
-  const handleLogout = () =>
-  {
-    window.localStorage.clear()
-    userDispatch({ type: "LOGOUT" })
-  }
-
   const usernameOnChange = ({ target }) => setUsername(target.value)
   const passwordOnChange = ({ target }) => setPassword(target.value)
 
@@ -85,7 +79,7 @@ const App = () =>
           ?
           <LoginForm handleOnClick={handleOnClick} usernameOnChange={usernameOnChange} passwordOnChange={passwordOnChange} username={username} password={password} />
           :
-          <AllBlogs user={user} blogs={blogs} handleLogout={handleLogout} />
+          <AllBlogs blogs={blogs} />
       }
     </div>
   )

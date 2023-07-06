@@ -1,13 +1,20 @@
 import Notification from "./Notification.js"
-import NewBlogForm from "./NewBlogForm.js"
-import Blog from "./Blog.js"
-import Togglable from "./Togglable.js"
-import { useRef } from "react"
+import { useContext } from "react"
+import UserContext from "./UserContext.js"
+import { Routes, Route } from "react-router-dom"
+import Home from "./Home.js"
+import Users from "./Users.js"
 
-const Blogs = ({ user, blogs, handleLogout }) =>
+const Blogs = ({ blogs }) =>
 {
-    //useRef
-    const blogFormRef = useRef()
+    const [user, userDispatch] = useContext(UserContext)
+
+    const handleLogout = () =>
+    {
+        window.localStorage.clear()
+        userDispatch({ type: "LOGOUT" })
+    }
+
 
     return (
         <div>
@@ -15,17 +22,15 @@ const Blogs = ({ user, blogs, handleLogout }) =>
 
             <Notification />
 
-            <p>{user.username} logged in <input id="logout-button" type="submit" value="Logout" onClick={handleLogout} /></p>
+            <p>{user.username} logged in </p>
+            <input id="logout-button" type="submit" value="Logout" onClick={handleLogout} />
 
-            <Togglable buttonLabel="New blog" ref={blogFormRef}>
-                <NewBlogForm blogFormRef={blogFormRef} />
-            </Togglable>
+            <Routes>
+                <Route path="/" element={<Home blogs={blogs} />} />
+                <Route path="/users" element={<Users />} />
+            </Routes>
 
-            {
-                blogs
-                    .sort((a, b) => a.likes - b.likes)
-                    .map(blog => (< Blog user={user} key={blog.id} blog={blog} />))
-            }
+
         </div>
     )
 }

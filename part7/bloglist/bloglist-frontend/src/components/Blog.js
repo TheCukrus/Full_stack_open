@@ -3,13 +3,16 @@ import { useState, useContext } from "react"
 import blogService from "../services/blogs.js"
 import NotificationContext from "./NotificationContext.js"
 import { useQueryClient, useMutation } from "react-query"
+import UserContext from "./UserContext.js"
 
-const Blog = ({ user, blog }) =>
+const Blog = ({ blog }) =>
 {
   const queryClient = useQueryClient()
 
   // eslint-disable-next-line no-unused-vars
   const [notification, notificationDispatch] = useContext(NotificationContext)
+  // eslint-disable-next-line no-unused-vars
+  const [user, userDispatch] = useContext(UserContext)
 
   const [show, setShow] = useState(false)
 
