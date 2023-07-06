@@ -1,5 +1,6 @@
 import Notification from "./Notification.js"
 import PropTypes from "prop-types"
+import { Form, Button } from "react-bootstrap"
 
 const LoginForm = ({ handleOnClick, username, password, usernameOnChange, passwordOnChange }) =>
 {
@@ -9,12 +10,28 @@ const LoginForm = ({ handleOnClick, username, password, usernameOnChange, passwo
 
             <Notification />
 
-            <form onSubmit={handleOnClick} name="login form">
-                Username<input id="username" type="text" value={username} onChange={usernameOnChange} /><br />
-                Password<input id="password" type="password" value={password} onChange={passwordOnChange} /><br />
-                <input id="login-button" type="submit" />
-            </form>
-        </div>
+            <Form onSubmit={handleOnClick} name="login form">
+                <Form.Group>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={usernameOnChange}
+                    />
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={passwordOnChange}
+                    />
+                    <Button variant="primary" type="submit" id="login-button">
+                        Login
+                    </Button>
+                </Form.Group>
+            </Form>
+        </div >
     )
 }
 

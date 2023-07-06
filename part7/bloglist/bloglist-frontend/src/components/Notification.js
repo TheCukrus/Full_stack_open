@@ -1,7 +1,7 @@
 import "./Notification.css"
 import { useContext } from "react"
 import NotificationContex from "../components/NotificationContext.js"
-
+import { Alert } from "react-bootstrap"
 const Notification = () =>
 {
     const [notification, notificationDispatch] = useContext(NotificationContex)
@@ -13,11 +13,11 @@ const Notification = () =>
 
     if (!notification) return null
 
-    console.log(notification)
+    // console.log(notification)
     return (
-        <div className={notification.nameOfClass}>
+        <Alert variant={notification.nameOfClass === "error" ? "danger" : "success"}>
             {notification.message}
-        </div>
+        </Alert>
     )
 }
 

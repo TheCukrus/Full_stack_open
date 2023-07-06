@@ -2,6 +2,7 @@ import { useState, useContext } from "react"
 import blogService from "../services/blogs.js"
 import NotificationContext from "./NotificationContext.js"
 import { useMutation, useQueryClient } from "react-query"
+import { Form, Button } from "react-bootstrap"
 
 const NewBlogForm = ({ blogFormRef }) =>
 {
@@ -48,12 +49,40 @@ const NewBlogForm = ({ blogFormRef }) =>
         <div>
             <h1>Create new</h1>
 
-            <form onSubmit={handleBlogOnClick}>
-                Title:<input type="text" id="title-input" placeholder="write your title" value={title} onChange={titleOnChange} /><br />
-                Author:<input type="text" id="author-input" placeholder="write your author" value={author} onChange={authorOnChange} /><br />
-                Url:<input type="text" id="url-input" placeholder="blog url" value={url} onChange={urlOnChange} /><br />
-                <input id="create-button" type="submit" value="create" />
-            </form>
+            <Form onSubmit={handleBlogOnClick}>
+                <Form.Group>
+                    <Form.Label>Title:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="title-input"
+                        placeholder="write your title"
+                        value={title}
+                        onChange={titleOnChange}
+                    />
+                    <Form.Label>Author:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="author-input"
+                        placeholder="write your author"
+                        value={author}
+                        onChange={authorOnChange}
+                    />
+                    <Form.Label>Url:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="url-input"
+                        placeholder="blog url"
+                        value={url}
+                        onChange={urlOnChange}
+                    />
+                    <Button
+                        id="create-button"
+                        type="submit"
+                        value="create"
+                        variant="primary"
+                    >Create</Button>
+                </Form.Group>
+            </Form>
         </div>
     )
 }

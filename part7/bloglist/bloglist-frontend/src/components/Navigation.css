@@ -1,12 +1,4 @@
 .navbar {
-    background-color: gainsboro;
     padding: 5px;
-}
-
-.navbar .user-info {
-    margin-left: 5px;
-}
-
-.navbar .nav-link {
-    margin-right: 5px;
+    color: white;
 }

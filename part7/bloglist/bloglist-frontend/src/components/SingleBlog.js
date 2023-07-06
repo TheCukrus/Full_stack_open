@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import { useQueryClient, useMutation } from "react-query"
+import { Form, Button } from "react-bootstrap"
 
 import UserContext from "./UserContext.js"
 import NotificationContext from "./NotificationContext.js"
@@ -56,28 +57,38 @@ const SingleBlog = ({ blog }) =>
         notificationDispatch({ type: "NOTIFICATION", payload: { message: `Voted for ${blog.title}`, nameOfClass: "success" } })
     }
 
-    console.log(blog)
+    // console.log(blog)
     return (
         <div>
             <h2>blog app</h2>
 
             <h1>{blog.title} {blog.author}</h1>
             <a href={blog.url}>{blog.url}</a> <br />
-            Likes {blog.likes} <button id="like" onClick={increaseLikeCount}>Like</button><br />
+            Likes {blog.likes} <Button id="like" variant="primary" size="sm" onClick={increaseLikeCount}>Like</Button><br />
             Added by {blog.user.username}<br />
             {user.username === blog.user.username
                 ?
-                <button id="remove" className="removeButton" onClick={removeBlog}>Remove</button>
+                <Button id="remove" variant="danger" size="sm" onClick={removeBlog}>Remove</Button>
                 :
                 null
             }
 
             <h4>Comments</h4>
 
-            <form onSubmit={commentOnSubmit}>
-                <input type="text" value={comment} onChange={commentOnChange} />
-                <input type="submit" value="Add comment" />
-            </form>
+            <Form onSubmit={commentOnSubmit}>
+                <Form.Group>
+                    <Form.Control
+                        type="text"
+                        value={comment}
+                        onChange={commentOnChange}
+                    />
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        value="Add comment"
+                    >Add comment</Button>
+                </Form.Group>
+            </Form>
 
             <ul>
                 {blog.comments.map((ele) => <li key={ele}>{ele}</li>)}

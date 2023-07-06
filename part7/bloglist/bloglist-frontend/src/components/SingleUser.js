@@ -7,7 +7,7 @@ const SingleUser = ({ user }) =>
         return null
     }
 
-    console.log(user)
+    // console.log(user)
     return (
         <div>
             <h1>{user.name}</h1>

@@ -73,7 +73,7 @@ const App = () =>
   const blogs = fetchingAllBlogs.data
 
   return (
-    <div>
+    <div className="container">
       {
         !user
           ?
