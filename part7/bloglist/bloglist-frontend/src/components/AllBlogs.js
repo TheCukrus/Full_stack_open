@@ -6,6 +6,7 @@ import Home from "./Home.js"
 import Users from "./Users.js"
 import SingleUser from "./SingleUser.js"
 import userService from "../services/users.js"
+import SingleBlog from "./SingleBlog.js"
 
 const Blogs = ({ blogs }) =>
 {
@@ -19,9 +20,14 @@ const Blogs = ({ blogs }) =>
         userDispatch({ type: "LOGOUT" })
     }
 
-    const match = useMatch("/users/:id")
-    const matchingUser = match
-        ? users.find((ele) => ele.id === match.params.id)
+    const matchUser = useMatch("/users/:id")
+    const matchingUser = matchUser
+        ? users.find((ele) => ele.id === matchUser.params.id)
+        : null
+
+    const matchBlog = useMatch("/blogs/:id")
+    const matchingBlogs = matchBlog
+        ? blogs.find((ele) => ele.id === matchBlog.params.id)
         : null
 
     const fetchData = async () =>
@@ -48,6 +54,7 @@ const Blogs = ({ blogs }) =>
                 <Route path="/" element={<Home blogs={blogs} />} />
                 <Route path="/users" element={<Users users={users} />} />
                 <Route path="/users/:id" element={<SingleUser user={matchingUser} />} />
+                <Route path="/blogs/:id" element={<SingleBlog blog={matchingBlogs} />} />
             </Routes>
 
 
