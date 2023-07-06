@@ -44,6 +44,7 @@ const SingleBlog = ({ blog }) =>
         notificationDispatch({ type: "NOTIFICATION", payload: { message: `Voted for ${blog.title}`, nameOfClass: "success" } })
     }
 
+    console.log(blog)
     return (
         <div>
             <h2>blog app</h2>
@@ -58,6 +59,12 @@ const SingleBlog = ({ blog }) =>
                 :
                 null
             }
+
+            <h4>Comments</h4>
+            <ul>
+                {blog.comments.map((ele) => <li key={ele}>{ele}</li>)}
+            </ul>
+
         </div>
     )
 }

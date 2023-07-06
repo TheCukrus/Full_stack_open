@@ -72,6 +72,40 @@ blogListRouter.post("/", async (request, response) =>
     }
 })
 
+blogListRouter.post("/:id/comments", async (request, response) =>
+{
+    try
+    {
+        if (!request.token.id)
+        {
+            return response.status(401).json({ message: "Token invalid" })
+        }
+
+        if (!request.body)
+        {
+            return response.status(400).json({ message: logger.error("Input missing") })
+        }
+
+        const findBlog = await blog.findById(request.params.id)
+
+        if (!findBlog)
+        {
+            return response.status(400).json({ message: logger.error("Blog not find") })
+        }
+
+        findBlog.comments.push(request.body.comment)
+
+        const updatedBlog = await findBlog.save()
+
+        response.status(201).json(updatedBlog)
+    }
+    catch (err)
+    {
+        logger.error(err)
+        response.status(500).json({ message: "Internal server errror" })
+    }
+})
+
 blogListRouter.put("/:id", async (request, response) =>
 {
     try
